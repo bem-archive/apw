@@ -17,3 +17,8 @@ d.addParent(b2);
 d.addParent(c2);
 
 chunks.extractChunks(a1);
+console.log('CHUNKS BEFORE PUSH JOBS');
+console.log(chunks.toString());
+chunks.pushJobs();
+console.log('CHUNKS AFTER PUSH JOBS');
+console.log(chunks.toString());
