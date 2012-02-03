@@ -17,37 +17,43 @@ var a1 = newNode('A1 (root node)', function(cb) { console.log('run(A1)'); cb(10)
 d.addParent(b2);
 d.addParent(c2);
 
-var aa1 = newNode('AA1 (root node)', function() {
+var aa1 = newNode('AA1 (root node)', function(cb) {
         console.log('run(AA1)');
         setTimeout(function() {
             console.log('done(AA1)');
-            // TODO: need to return 10;
+            cb(10);
         }, 2000);
     }),
-    aa2 = aa1.addChild(newNode('AA2', function() { console.log('run(AA2)'); return 20 })),
-    bb1 = aa2.addChild(newNode('BB1', function() { console.log('run(BB1)'); return 30 })),
-    bb2 = bb1.addChild(newNode('BB2', function() {
+    aa2 = aa1.addChild(newNode('AA2', function(cb) { console.log('run(AA2)'); cb(20) })),
+    bb1 = aa2.addChild(newNode('BB1', function(cb) { console.log('run(BB1)'); cb(30) })),
+    bb2 = bb1.addChild(newNode('BB2', function(cb) {
         console.log('run(BB2)');
         setTimeout(function() {
             console.log('done(BB2)');
-            // TODO: need to return 40;
+            cb(40);
         }, 3000);
     })),
-    cc1 = aa2.addChild(newNode('CC1', function() { console.log('run(CC1)'); return 50 })),
-    cc2 = cc1.addChild(newNode('CC2', function() { console.log('run(CC2)'); return 60 })),
+    cc1 = aa2.addChild(newNode('CC1', function(cb) { console.log('run(CC1)'); cb(50) })),
+    cc2 = cc1.addChild(newNode('CC2', function(cb) { console.log('run(CC2)'); cb(60) })),
 
-    root = newNode('Pseudo', function() {
+    root = newNode('Pseudo', function(cb) {
         console.log('run(Pseudo)');
         setTimeout(function() {
             console.log('done(Pseudo)');
-            // TODO: mark job as done
+            cb();
         }, 2000);
     });
 
-root.addChild(a1);
-root.addChild(aa1);
+root.addChild(b2);
+root.addChild(bb2);
 
 chunks.fillChunks(root);
+// TODO: chunks.fillChunks(a1, aa1);
+
+// TODO: failed jobs
+// TODO: forget to call callback (may be fixed using promises)
+// TODO: subgraph in planning
+
 console.log('=========\nINITIAL CHUNKS\n---------');
 console.log(chunks.toString());
 console.log('=========\nRUN JOBS\n---------');
