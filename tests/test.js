@@ -16,8 +16,8 @@ var a1 = newNode('A1 (root node)', function() { console.log('run(A1)') }),
 d.addParent(b2);
 d.addParent(c2);
 
-chunks.extractChunks(a1);
+chunks.fillChunks(a1);
 console.log('=========\nINITIAL CHUNKS\n---------');
 console.log(chunks.toString());
 console.log('=========\nRUN JOBS\n---------');
-chunks.pushJobs();
+chunks.run();
