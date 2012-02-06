@@ -1,0 +1,2 @@
+* failed jobs
+* forget to call callback (may be fixed using promises)
