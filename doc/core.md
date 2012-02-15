@@ -1,1 +1,1 @@
-![Graph](./graph.png)
+![Graph](https://github.com/afelix/sandbox2/raw/master/doc/graph.png)
