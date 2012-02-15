@@ -1,0 +1,17 @@
+{
+  "author": "",
+  "name": "sandbox2",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/afelix/sandbox2.git"
+  },
+  "engines": {
+    "node": "~0.6.9"
+  },
+  "dependencies": {
+    "qq": "0.3.x"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {}
+}
