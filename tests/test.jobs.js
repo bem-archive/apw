@@ -14,19 +14,18 @@ var Q = require('qq'),
 
 */
 
-graph.setNode({ run: function(cb) { console.log('A: run'); cb(10) }}, 'A');
-graph.setNode({ run: function(cb) { console.log('B: run'); cb(20) }}, 'B');
-graph.setNode({ run: function(cb) { console.log('C: run'); cb(30) }}, 'C', ['A', 'B']);
-graph.setNode({ run: function(cb) { console.log('D1: run'); cb(40) }}, 'D1', ['C']);
-graph.setNode({ run: function(cb) { console.log('D2: run'); cb(50) }}, 'D2', ['D1']);
-graph.setNode({ run: function(cb) { console.log('E1: run'); cb(60) }}, 'E1', ['C']);
-graph.setNode({ run: function(cb) { console.log('E2: run'); cb(70) }}, 'E2', ['E1']);
-graph.setNode({ run: function(cb) { console.log('X: run'); cb(80) }}, 'X');
+graph.setNode({ run: function() { console.log('A: run'); }}, 'A');
+graph.setNode({ run: function() { console.log('B: run'); }}, 'B');
+graph.setNode({ run: function() { console.log('C: run'); }}, 'C', ['A', 'B']);
+graph.setNode({ run: function() { console.log('D1: run'); }}, 'D1', ['C']);
+graph.setNode({ run: function() { console.log('D2: run'); }}, 'D2', ['D1']);
+graph.setNode({ run: function() { console.log('E1: run'); }}, 'E1', ['C']);
+graph.setNode({ run: function() { console.log('E2: run'); }}, 'E2', ['E1']);
+graph.setNode({}, 'E3', ['E2']);
+graph.setNode({ run: function() { console.log('X: run'); }}, 'X');
 
 var plan = graph.createPlan('C'),
-    jobs = newJobs(plan, 3, function() {
-        console.log('finished');
-    });
+    jobs = newJobs(plan, 3);
 
 console.log('== WHOLE GRAPH ==');
 console.log(graph.toString());
@@ -34,5 +33,7 @@ console.log('== PLAN (C) ==');
 console.log(plan.toString());
 console.log('== RUN JOBS ==');
 
-jobs.start();
+jobs.start().then(function() {
+    console.log('finished');
+});
 console.log('started');
