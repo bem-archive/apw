@@ -21,7 +21,11 @@ graph.setNode({}, 'E1', ['C']);
 graph.setNode({}, 'E2', ['E1']);
 graph.setNode({}, 'X');
 
-console.log('== ROOTS ==');
-console.log(graph.findRoots().join(', '));
+var plan = graph.createPlan('C');
+
 console.log('== WHOLE GRAPH ==');
 console.log(graph.toString());
+console.log('== PLAN (C) ==');
+console.log(plan.toString());
+console.log('== JOBS AFTER RESCAN ==');
+console.log(plan.rescanJobs());
