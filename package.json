@@ -10,7 +10,8 @@
     "node": "~0.6.9"
   },
   "dependencies": {
-    "qq": "0.3.x"
+    "qq": "0.3.x",
+    "coa": "0.3.x"
   },
   "devDependencies": {},
   "optionalDependencies": {}
