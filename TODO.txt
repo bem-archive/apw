@@ -5,8 +5,8 @@
 
 Promises:
 - job function is a future?
-- job function return promise
-- build process start function return promise
++ job function return promise
++ build process start function return promise
 
 Demo:
 - promises api
