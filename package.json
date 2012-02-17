@@ -1,10 +1,14 @@
 {
   "author": "",
-  "name": "sandbox2",
+  "name": "proto",
   "version": "0.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/afelix/sandbox2.git"
+  },
+  "main": "./lib/proto",
+  "bin": {
+      "proto": "./bin/proto"
   },
   "engines": {
     "node": "~0.6.9"
@@ -14,5 +18,6 @@
     "coa": "0.3.x"
   },
   "devDependencies": {},
-  "optionalDependencies": {}
+  "optionalDependencies": {},
+  "private": true
 }
