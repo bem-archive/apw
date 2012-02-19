@@ -27,5 +27,5 @@ console.log('== WHOLE GRAPH ==');
 console.log(graph.toString());
 console.log('== PLAN (C) ==');
 console.log(plan.toString());
-console.log('== JOBS AFTER RESCAN ==');
-console.log(plan.rescanJobs());
+console.log('== JOBS ==');
+console.log(plan.jobs);
