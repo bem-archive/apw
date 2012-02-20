@@ -1,6 +1,5 @@
-var Q = require('qq'),
-    graph = require('../lib/parts/graph.js').newGraph(),
-    newJobs = require('../lib/parts/jobs.js').newJobs;
+var graph = require('..').newGraph(),
+    Pool = require('..').Pool;
 
 /*
 
@@ -25,7 +24,7 @@ graph.setNode({}, 'E3', ['E2']);
 graph.setNode({ run: function() { console.log('X: run'); }}, 'X');
 
 var plan = graph.createPlan('C'),
-    jobs = newJobs(plan, 3);
+    pool = new Pool(plan, 3);
 
 console.log('== WHOLE GRAPH ==');
 console.log(graph.toString());
@@ -33,7 +32,7 @@ console.log('== PLAN (C) ==');
 console.log(plan.toString());
 console.log('== RUN JOBS ==');
 
-jobs.start().then(function() {
+pool.start().then(function() {
     console.log('finished');
 });
 console.log('started');
