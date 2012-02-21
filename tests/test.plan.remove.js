@@ -1,4 +1,4 @@
-var graph = require('../lib/parts/graph.js').newGraph();
+var graph = new (require('..').Graph)();
 
 /*
 

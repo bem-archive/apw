@@ -1,4 +1,4 @@
-var graph = require('..').newGraph(),
+var graph = new (require('..').Graph)(),
     Pool = require('..').Pool;
 
 /*
