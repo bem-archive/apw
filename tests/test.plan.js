@@ -12,14 +12,14 @@ var graph = new (require('..').Graph)();
 
 */
 
-graph.setNode({}, 'A');
-graph.setNode({}, 'B');
-graph.setNode({}, 'C', ['A', 'B']);
-graph.setNode({}, 'D1', ['C']);
-graph.setNode({}, 'D2', ['D1']);
-graph.setNode({}, 'E1', ['C']);
-graph.setNode({}, 'E2', ['E1']);
-graph.setNode({}, 'X');
+graph.setNode('A', {});
+graph.setNode('B', {});
+graph.setNode('C', {}, ['A', 'B']);
+graph.setNode('D1', {}, ['C']);
+graph.setNode('D2', {}, ['D1']);
+graph.setNode('E1', {}, ['C']);
+graph.setNode('E2', {}, ['E1']);
+graph.setNode('X', {});
 
 var plan = graph.createPlan('C');
 

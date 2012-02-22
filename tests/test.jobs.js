@@ -13,15 +13,15 @@ var graph = new (require('..').Graph)(),
 
 */
 
-graph.setNode({ run: function() { console.log('A: run'); }}, 'A');
-graph.setNode({ run: function() { console.log('B: run'); }}, 'B');
-graph.setNode({ run: function() { console.log('C: run'); }}, 'C', ['A', 'B']);
-graph.setNode({ run: function() { console.log('D1: run'); }}, 'D1', ['C']);
-graph.setNode({ run: function() { console.log('D2: run'); }}, 'D2', ['D1']);
-graph.setNode({ run: function() { console.log('E1: run'); }}, 'E1', ['C']);
-graph.setNode({ run: function() { console.log('E2: run'); }}, 'E2', ['E1']);
-graph.setNode({}, 'E3', ['E2']);
-graph.setNode({ run: function() { console.log('X: run'); }}, 'X');
+graph.setNode('A', { run: function() { console.log('A: run'); }});
+graph.setNode('B', { run: function() { console.log('B: run'); }});
+graph.setNode('C', { run: function() { console.log('C: run'); }}, ['A', 'B']);
+graph.setNode('D1', { run: function() { console.log('D1: run'); }}, ['C']);
+graph.setNode('D2', { run: function() { console.log('D2: run'); }}, ['D1']);
+graph.setNode('E1', { run: function() { console.log('E1: run'); }}, ['C']);
+graph.setNode('E2', { run: function() { console.log('E2: run'); }}, ['E1']);
+graph.setNode('E3', {}, ['E2']);
+graph.setNode('X', { run: function() { console.log('X: run'); }});
 
 var plan = graph.createPlan('C'),
     pool = new Pool(plan, 3);

@@ -6,10 +6,10 @@ var graph = new (require('..').Graph)();
 
 */
 
-graph.setNode({}, 'A');
-graph.setNode({}, 'B', ['A']);
-graph.setNode({}, 'C', ['B']);
-graph.setNode({}, 'D', ['C']);
+graph.setNode('A', {});
+graph.setNode('B', {}, ['A']);
+graph.setNode('C', {}, ['B']);
+graph.setNode('D', {}, ['C']);
 
 console.log('== BEFORE UNLINK(A, B) ==');
 console.log(graph.toString());
