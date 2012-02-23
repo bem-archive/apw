@@ -12,5 +12,9 @@ Demo:
 + graph manipulations
 + build page flow
 
+Documentation
+- API description / JSDoc
+- usage samples
+
 Advanced requirements:
 - nodes override and reimplementation
