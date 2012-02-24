@@ -1,17 +1,3 @@
-+ failed jobs
-+ forget to call callback (may be fixed using promises)
-+ graph manipulations api
-+ remove result return from `run()`
-
-Promises:
-+ job function return promise
-+ build process start function return promise
-
-Demo:
-+ promises api
-+ graph manipulations
-+ build page flow
-
 Documentation
 - API description / JSDoc
 - usage samples
