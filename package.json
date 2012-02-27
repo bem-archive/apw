@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git://github.com/afelix/samurai.git"
   },
-  "main": "./lib/samurai",
+  "main": "./lib/core",
   "bin": {
       "proto": "./bin/samurai"
   },
