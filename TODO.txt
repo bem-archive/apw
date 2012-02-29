@@ -4,3 +4,6 @@ Documentation
 
 Advanced requirements:
 - nodes override and reimplementation
+
+Problems:
+- loops in graph
