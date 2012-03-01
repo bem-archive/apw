@@ -10,6 +10,25 @@ var CORE = require('../lib/core.js'),
 graph.setNode('A', { run: function() { console.log('A.run()') } });
 graph.setNode('B', { run: function() { console.log('B.run()') } }, 'A');
 graph.setNode('C', { run: function() { console.log('C.run()') } }, 'B');
+graph.setNode('D', { run: function() { console.log('D.run()') } }, 'B');
+
+graph.setNode(
+	'E',
+	{
+		run: function() {
+			console.log('E.run()');
+			graph.withLock(
+				function() {
+					graph.setNode('childD1', { run: function() { console.log('childD1.run()') } }, 'D');
+					graph.setNode('childD2', { run: function() { console.log('childD2.run()') } }, 'D');
+				},
+				this
+			);
+		}
+	},
+	'D'
+);
+
 
 runner.process('A');
 
