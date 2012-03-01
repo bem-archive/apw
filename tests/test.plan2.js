@@ -21,6 +21,25 @@ graph.setNode(
 				function() {
 					graph.setNode('childD1', { run: function() { console.log('childD1.run()') } }, 'D');
 					graph.setNode('childD2', { run: function() { console.log('childD2.run()') } }, 'D');
+					graph.setNode('X', { run: function() { console.log('X.run()') } });
+					graph.setNode('childX1', { run: function() { console.log('childX1.run()') } }, 'X');
+					graph.setNode('childX2', { run: function() { console.log('childX1.run()') } }, 'X');
+				},
+				this
+			);
+		}
+	},
+	'D'
+);
+
+graph.setNode(
+	'F',
+	{
+		run: function() {
+			console.log('F.run()');
+			graph.withLock(
+				function() {
+					graph.link('X', 'A');
 				},
 				this
 			);
