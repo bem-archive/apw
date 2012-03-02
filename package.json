@@ -31,5 +31,8 @@
     "vows": "0.6.x"
   },
   "devDependencies": {},
-  "optionalDependencies": {}
+  "optionalDependencies": {},
+  "scripts": {
+    "test": "vows --spec tests/*"
+  }
 }
