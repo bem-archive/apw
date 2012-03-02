@@ -121,7 +121,7 @@ suite
                 var graph = getEmptyGraph();
                 
                 graph.setNode('A', { run: 'testA' });
-                graph.setNode('B', { run: 'testA' }, 'B');
+                graph.setNode('B', { run: 'testA' }, 'A');
                 graph.unlink('B', 'A');
 
                 return graph;
