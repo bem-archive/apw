@@ -50,7 +50,23 @@ suite
                 assert.lengthOf(parents, 1);
                 assert.equal(parents[0], 'A');
             }
+        },
+        'Node availability check': {
+            topic: function() {
+                var graph = getEmptyGraph();
+                
+                graph.setNode('A', { run: 'testA' });
+                
+                return graph;
+            },
+            'hasNode() A': function(graph) {
+                assert.equal(graph.hasNode('A'), true);
+            },
+            'hasNode() absent': function(graph) {
+                assert.equal(graph.hasNode('XXX'), false);
+            }
         }
+
     });
 
 suite.export(module);
