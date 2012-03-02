@@ -18,8 +18,8 @@ suite
             topic: function() {
                 return getEmptyPool();
             },
-            'start()': function(pool) {
-                pool.start();
+            'dummy': function(pool) {
+                //pool.start();
             }
         }
 
