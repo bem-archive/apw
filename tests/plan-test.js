@@ -26,6 +26,18 @@ suite
             'nextJob()': function(job) {
                 assert.equal(job.id, 'C');
             }
+        },
+
+        'Operability': {
+            topic: function() {
+                return getFilledGraph().createPlan('A');
+            },
+            'isOperable() default': function(plan) {
+                assert.equal(plan.isOperable(), true);
+            },
+            'allDone() default': function(plan) {
+                assert.equal(plan.allDone(), false);
+            }
         }
 
     });
