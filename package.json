@@ -27,7 +27,8 @@
   "dependencies": {
     "qq": "0.3.x",
     "coa": "0.3.x",
-    "inherit": "1"
+    "inherit": "1",
+    "vows": "0.6.x"
   },
   "devDependencies": {},
   "optionalDependencies": {}
