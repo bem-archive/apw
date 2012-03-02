@@ -9,7 +9,7 @@ function getEmptyGraph() {
 
 suite
     .addBatch({
-        'Simple set/get': {
+        'Node set / get': {
             topic: function() {
                 var graph = getEmptyGraph();
                 
@@ -91,6 +91,45 @@ suite
 
                 graph.removeNode('XXX');
             }
+        },
+
+        'Node link': {
+            topic: function() {
+                var graph = getEmptyGraph();
+                
+                graph.setNode('A', { run: 'testA' });
+                graph.setNode('B', { run: 'testA' });
+                graph.link('B', 'A');
+                
+                return graph;
+            },
+            'link() B -> A': function(graph) {
+                var children = graph.getChildrenIds('A');
+                
+                assert.lengthOf(children, 1);
+                assert.equal(children[0], 'B');
+
+                var parents = graph.getParentsIds('B');
+                
+                assert.lengthOf(parents, 1);
+                assert.equal(parents[0], 'A');
+            }            
+        },
+
+        'Node unlink': {
+            topic: function() {
+                var graph = getEmptyGraph();
+                
+                graph.setNode('A', { run: 'testA' });
+                graph.setNode('B', { run: 'testA' }, 'B');
+                graph.unlink('B', 'A');
+
+                return graph;
+            },
+            'unlink() B - A': function(graph) {
+                assert.lengthOf(graph.getChildrenIds('A'), 0);
+                assert.lengthOf(graph.getParentsIds('B'), 0);
+            }            
         }
 
     });
