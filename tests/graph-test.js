@@ -51,6 +51,7 @@ suite
                 assert.equal(parents[0], 'A');
             }
         },
+
         'Node availability check': {
             topic: function() {
                 var graph = getEmptyGraph();
@@ -64,6 +65,40 @@ suite
             },
             'hasNode() absent': function(graph) {
                 assert.equal(graph.hasNode('XXX'), false);
+            }
+        },
+
+        'Node removal': {
+            topic: function() {
+                var graph = getEmptyGraph();
+                
+                graph.setNode('A', { run: 'testA' });
+                graph.setNode('B', { run: 'testB' }, 'A');
+                
+                return graph;
+            },
+            'removeNode() leaf B': function(graph) {
+                assert.equal(graph.hasNode('B'), true);
+
+                graph.removeNode('B');
+
+                assert.equal(graph.hasNode('B'), false);
+                assert.lengthOf(graph.getChildrenIds('A'), 0);
+            },
+            'removeNode() node A': function(graph) {
+                assert.equal(graph.hasNode('A'), true);
+                assert.lengthOf(graph.getParentsIds('B'), 1);
+                assert.equal(graph.getParentsIds('B')[0], 'A');
+
+                graph.removeNode('A');
+
+                assert.equal(graph.hasNode('A'), false);
+                assert.lengthOf(graph.getParentsIds('B'), 0);
+            },
+            'removeNode() absent': function(graph) {
+                assert.equal(graph.hasNode('XXX'), false);
+
+                graph.removeNode('XXX');
             }
         }
 
