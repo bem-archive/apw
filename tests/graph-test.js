@@ -4,16 +4,7 @@ var VOWS = require('vows'),
     CORE = require('../lib/core.js');
 
 function getEmptyGraph() {
-    var graph = new CORE.Graph();
-    graph.setNode({
-        getId: function() {
-            return 'all';
-        },
-        run: function() {
-            console.error("** Nothing to be done for '%s'", this.getId());
-        }
-    });
-    return graph;
+    return new CORE.Graph();
 }
 
 suite
