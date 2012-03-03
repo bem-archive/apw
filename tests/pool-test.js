@@ -16,6 +16,15 @@ function getSimpleGraph(state) {
     graph.setNode('1A', { run: function() { state.push('1A') } });
     graph.setNode('1B', { run: function() { state.push('1B') } }, '1A');
     
+    graph.setNode('2A', { run: function() { state.push('2A') } });
+    graph.setNode('2B', {
+        run: function(ctx) {
+            state.push('2B');
+            ctx.graph.setNode('2C', { run: function() { state.push('2C') } }, '2A');
+            ctx.graph.setNode('2D', { run: function() { state.push('2D') } }, '2A');
+        }
+    }, '2A');
+
     return graph;
 }
 
@@ -67,6 +76,25 @@ suite
                 assert.lengthOf(state, 2);
                 assert.equal(state[0], '1B');
                 assert.equal(state[1], '1A');
+            }
+        },
+        'Run plan: A -> B* -> (A -> C, A -> D)': {
+            topic: function() {
+                var _this = this,
+                    state = [];
+                Q.when(
+                    getRunner(getSimpleGraph(state), true).process('2A'),
+                    function(value) { _this.callback(null, state) },
+                    function(error) { _this.callback(error, null) }
+                )
+            },
+            'correct plan update on-the-fly': function(error, state) {
+                assert.isNull(error);
+                assert.lengthOf(state, 4);
+                assert.equal(state[0], '2B');
+                if (state[1] === '2C') assert.equal(state[2], '2D');
+                if (state[1] === '2D') assert.equal(state[2], '2C');
+                assert.equal(state[3], '2A');
             }
         }
     });
