@@ -7,17 +7,30 @@ function getEmptyGraph() {
     return new CORE.Graph();
 }
 
+function getSimpleGraph() {
+    var graph = getEmptyGraph();
+    
+    graph.setNode('A', { run: 'testA' });
+    graph.setNode('B', { run: 'testB' }, 'A');
+    
+    return graph;
+
+}
+
 suite
     .addBatch({
         'Node set / get': {
-            topic: function() {
-                var graph = getEmptyGraph();
-                
-                graph.setNode('A', { run: 'testA' });
-                graph.setNode('B', { run: 'testB' }, 'A');
-                
-                return graph;
-            },
+            topic: getSimpleGraph,
+            'children': function(graph) {
+                assert.lengthOf(graph.children['A'], 1);
+                assert.equal(graph.children['A'][0], 'B');
+                assert.lengthOf(graph.children['B'], 0);
+            }, 
+            'parents': function(graph) {
+                assert.lengthOf(graph.parents['B'], 1);
+                assert.equal(graph.parents['B'][0], 'A');
+                assert.lengthOf(graph.parents['A'], 0);
+            }, 
             'getNode() A': function(graph) {
                 var node = graph.getNode('A');
                 
@@ -59,15 +72,8 @@ suite
             }
         },
 
-        'Node removal': {
-            topic: function() {
-                var graph = getEmptyGraph();
-                
-                graph.setNode('A', { run: 'testA' });
-                graph.setNode('B', { run: 'testB' }, 'A');
-                
-                return graph;
-            },
+        'Node removal (leaf)': {
+            topic: getSimpleGraph,
             'removeNode() leaf B': function(graph) {
                 assert.equal(graph.hasNode('B'), true);
 
@@ -75,7 +81,11 @@ suite
 
                 assert.equal(graph.hasNode('B'), false);
                 assert.lengthOf(graph.getChildrenIds('A'), 0);
-            },
+            }
+        },
+
+        'Node removal (node)': {
+            topic: getSimpleGraph,        
             'removeNode() node A': function(graph) {
                 assert.equal(graph.hasNode('A'), true);
                 assert.lengthOf(graph.getParentsIds('B'), 1);
@@ -85,7 +95,11 @@ suite
 
                 assert.equal(graph.hasNode('A'), false);
                 assert.lengthOf(graph.getParentsIds('B'), 0);
-            },
+            }
+        },
+
+        'Node removal (absent)': {
+            topic: getSimpleGraph,
             'removeNode() absent': function(graph) {
                 assert.equal(graph.hasNode('XXX'), false);
 
