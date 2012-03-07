@@ -19,7 +19,7 @@
   },
   "main": "./lib/core",
   "bin": {
-      "proto": "./bin/samurai"
+      "samurai": "./bin/samurai"
   },
   "engines": {
     "node": "0.6 | 0.7"
