@@ -1,7 +1,7 @@
 {
-  "name": "samurai",
-  "version": "0.1.0",
-  "homepage": "http://github.com/afelix/samurai",
+  "name": "apw",
+  "version": "0.0.0",
+  "homepage": "http://github.com/bem/apw",
   "author": "Sergey Kryzhanovsky <skryzhanovsky@ya.ru> (http://github.com/afelix)",
   "maintainers": [
     "Sergey Kryzhanovsky <skryzhanovsky@ya.ru> (http://github.com/afelix)",
@@ -11,15 +11,15 @@
     "Sergey Belov <peimei@ya.ru> (http://github.com/arikon)"
   ],
   "bugs": {
-    "url": "http://github.com/afelix/samurai/issues"
+    "url": "http://github.com/bem/apw/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/afelix/samurai.git"
+    "url": "git://github.com/bem/apw.git"
   },
   "main": "./lib/core",
   "bin": {
-      "samurai": "./bin/samurai"
+      "apw": "./bin/apw"
   },
   "engines": {
     "node": "0.6 | 0.7"
@@ -33,6 +33,6 @@
   "devDependencies": {},
   "optionalDependencies": {},
   "scripts": {
-    "test": "vows --spec tests/*"
+    "test": "vows --spec"
   }
 }

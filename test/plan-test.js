@@ -1,27 +1,23 @@
 var VOWS = require('vows'),
     assert = require('assert'),
     suite = VOWS.describe('Plan'),
-    CORE = require('../lib/core.js');
+    CORE = require('../lib/core');
 
-function getEmptyGraph() {
-    return new CORE.Graph();
-}
+function getSimpleArch() {
+    var arch = new CORE.Arch();
 
-function getFilledGraph() {
-    var graph = getEmptyGraph();
+    arch.setNode('A', { run: function() {} });
+    arch.setNode('B', { run: function() {} }, 'A');
+    arch.setNode('C', { run: function() {} }, 'B');
 
-    graph.setNode('A', { run: function() {} });
-    graph.setNode('B', { run: function() {} }, 'A');
-    graph.setNode('C', { run: function() {} }, 'B');
-
-    return graph;
+    return arch;
 }
 
 suite
     .addBatch({
         'Jobs': {
             topic: function() {
-                return getFilledGraph().createPlan('A').nextJob();
+                return getSimpleArch().createPlan('A').nextJob();
             },
             'nextJob()': function(job) {
                 assert.equal(job.id, 'C');
@@ -30,7 +26,7 @@ suite
 
         'Operability': {
             topic: function() {
-                return getFilledGraph().createPlan('A');
+                return getSimpleArch().createPlan('A');
             },
             'isOperable() default': function(plan) {
                 assert.equal(plan.isOperable(), true);

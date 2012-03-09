@@ -1,50 +1,46 @@
 var Q = require('qq'),
     VOWS = require('vows'),
     assert = require('assert'),
-    suite = VOWS.describe('Pool'),
-    CORE = require('../lib/core.js');
+    suite = VOWS.describe('Workers'),
+    CORE = require('../lib/core');
 
-function getEmptyGraph() {
-    return new CORE.Graph();
-}
+function getSimpleArch(state) {
+    var arch = new CORE.Arch();
 
-function getSimpleGraph(state) {
-    var graph = getEmptyGraph();
-
-    graph.setNode('0A', { run: function() { state.push('0A') } });
+    arch.setNode('0A', { run: function() { state.push('0A') } });
     
-    graph.setNode('1A', { run: function() { state.push('1A') } });
-    graph.setNode('1B', { run: function() { state.push('1B') } }, '1A');
+    arch.setNode('1A', { run: function() { state.push('1A') } });
+    arch.setNode('1B', { run: function() { state.push('1B') } }, '1A');
     
-    graph.setNode('2A', { run: function() { state.push('2A') } });
-    graph.setNode('2B', {
+    arch.setNode('2A', { run: function() { state.push('2A') } });
+    arch.setNode('2B', {
         run: function(ctx) {
             state.push('2B');
-            ctx.graph.setNode('2C', { run: function() { state.push('2C') } }, '2A');
-            ctx.graph.setNode('2D', { run: function() { state.push('2D') } }, '2A');
+            ctx.arch.setNode('2C', { run: function() { state.push('2C') } }, '2A');
+            ctx.arch.setNode('2D', { run: function() { state.push('2D') } }, '2A');
         }
     }, '2A');
 
-    graph.setNode('3A', { run: function() { state.push('3A') } });
-    graph.setNode('3B', {
+    arch.setNode('3A', { run: function() { state.push('3A') } });
+    arch.setNode('3B', {
         run: function(ctx) {
             state.push('3B');
-            ctx.graph.withLock(function() {
-                ctx.graph.setNode('3C', { run: function() { state.push('3C') } }, '3A');
-                ctx.graph.setNode('3D', { run: function() { state.push('3D') } }, '3A');
+            ctx.arch.withLock(function() {
+                ctx.arch.setNode('3C', { run: function() { state.push('3C') } }, '3A');
+                ctx.arch.setNode('3D', { run: function() { state.push('3D') } }, '3A');
             });
         }
     }, '3A');
 
-    return graph;
+    return arch;
 }
 
-function getRunner(graph, force, method, maxWorkers) {
+function getRunner(arch, force, method, maxWorkers) {
     method = method || 'run';
     maxWorkers = maxWorkers || 2;
 
     return new CORE.Runner(
-        graph,
+        arch,
         maxWorkers,
         {
             method: method,
@@ -61,7 +57,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleGraph(state), true).process('0A'),
+                    getRunner(getSimpleArch(state), true).process('0A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -77,7 +73,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleGraph(state), true).process('1A'),
+                    getRunner(getSimpleArch(state), true).process('1A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -94,7 +90,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleGraph(state), true).process('2A'),
+                    getRunner(getSimpleArch(state), true).process('2A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -113,7 +109,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleGraph(state), true).process('3A'),
+                    getRunner(getSimpleArch(state), true).process('3A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
