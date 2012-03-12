@@ -1,6 +1,6 @@
 var VOWS = require('vows'),
 	assert = require('assert'),
-    suite = VOWS.describe('Graph'),
+    suite = VOWS.describe('Arch'),
     CORE = require('../lib/core');
 
 function getEmptyArch() {
