@@ -1,4 +1,4 @@
-APW (arch-plan-workers) является ядром системы сборки, в которой:
+**APW (arch-plan-workers)** является ядром системы сборки, в которой:
 
  * узлы графа целей могут менять граф
  * узлы решают, собирать им себя или нет
@@ -88,7 +88,36 @@ exports.getArch = function() {
 
     ** No rule to make target 'all'
 
-Имеет смысл заполнить граф задачами. На этапе инициализации графа это делается с помощью функций `Arch.setNode()` и `Arch.link()`.
+Имеет смысл заполнить граф задачами. На этапе инициализации это делается с помощью функций `Arch.setNode()` и `Arch.link()`. Например, для создания цепи задач `A -> (B, C)` можно написать вот такой код:
+
+```js
+arch.setNode('A', { run: function() { console.log('A') }});
+arch.setNode('B', { run: function() { console.log('B') }}, 'A');
+arch.setNode('C', { run: function() { console.log('C') }}, 'A');
+```
+
+.. или:
+
+```js
+arch.setNode('A', { run: function() { console.log('A') }});
+arch.setNode('B', { run: function() { console.log('B') }});
+arch.setNode('C', { run: function() { console.log('C') }});
+arch.link(['B', 'C'], 'A');
+```
+
+.. или:
+
+```js
+arch.setNode('B', { run: function() { console.log('B') }});
+arch.setNode('C', { run: function() { console.log('C') }});
+arch.setNode('A', { run: function() { console.log('A') }}, null, ['B', 'C']);
+```
+
+Во всех вариантах результат выполнения задачи `A` будет одинаков:
+
+    B
+    C
+    A
 
 ## API
 
