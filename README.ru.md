@@ -120,24 +120,25 @@ exports.getArch = function() {
 
 ### Arch
 
-**setNode(id, node, parents, children)** — добавляет задачу в граф.
+####setNode(id, node, parents, children)
 
-`id` — string, уникальный идентификатор задачи.
+Добавляет задачу в граф.
 
-`node` — object, сама задача.
+ * `id` — string, уникальный идентификатор задачи.
+ * `node` — object, сама задача.
+ * `parents` — string, `id` родителя, **или** array, список `id` родителей.
+ * `children` — string, `id` ребёнка, **или** array, список `id` детей.
 
-`parents` — string, `id` родителя, **или** array, список `id` родителей.
+####link(children, parents)
 
-`children` — string, `id` ребёнка, **или** array, список `id` детей.
+Связывает задачи.
 
-**link(children, parents)** — связывает задачи.
+ * `children` — string, `id` ребёнка, **или** array, список `id` детей.
+ * `parents` — string, `id` родителя, **или** array, список `id` родителей.
 
-`children` — string, `id` ребёнка, **или** array, список `id` детей.
+####unlink(id1, id2)
 
-`parents` — string, `id` родителя, **или** array, список `id` родителей.
+Удаляет связь между парой задач.
 
-**unlink(id1, id2)** — удаляет связь между парой задач.
-
-`id1` — string, уникальный идентификатор одной задачи.
-
-`id2` — string, уникальный идентификатор другой задачи.
+ * `id1` — string, уникальный идентификатор одной задачи.
+ * `id2` — string, уникальный идентификатор другой задачи.
