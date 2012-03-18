@@ -6,7 +6,7 @@ APW (arch-plan-workers) является ядром системы сборки,
 
 Конфигурационные файлы (конфиги) пишутся на языке JavaScript. Широко используется библиотека promises [Q](https://github.com/kriskowal/q).
 
-== Пример использования
+=== Пример использования
 
 Демонстрационный пример элементарного конфига:
 
@@ -36,12 +36,12 @@ exports.getArch = function() {
 
 Пример сложного конфига: [github.com/bem/bem-tools](https://github.com/bem/bem-tools/tree/server)
 
-== Установка
+=== Установка
 
 Перед установкой следует убедиться, что уже установлены:
 
  * Node.js (platform built on Chrome's JavaScript runtime) — [nodejs.org](http://nodejs.org)
- * npm (package manager for node) — [npmjs.org/](http://npmjs.org/)
+ * npm (package manager for node) — [npmjs.org](http://npmjs.org/)
 
 Модулем для API/require (рекомендуемый вариант):
 
@@ -51,7 +51,7 @@ exports.getArch = function() {
 
     npm install apw -g
 
-== Детальнее
+=== Детальнее
 
 Основное поле деятельности пользователя — конфигурационный файл.
 
@@ -62,7 +62,7 @@ exports.getArch = function() {
  * **Plan** (план) — план выполнения последовательности задач. Он определяет, какая следующая задача будет отправлена на выполнение.
  * **Workers** (исполнители) — сущности, фактически выполняющие задачи.
 
-== Как это работает?
+=== Как это работает?
 
 Пользователь создаёт конфиг с обязательным `exports.getArch` — эта функция должна вернуть экземпляр **Arch**.
 
