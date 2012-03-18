@@ -159,6 +159,53 @@ arch.setNode('B', {
 
 Если у вас всё-таки возникает нужда нарушить эти правила, скорее всего, есть ошибка в построении зависимостей и разумнее будет перекомпоновать задачи.
 
+Полезными могут оказаться и следующие функции.
+
+Удаление задачи из графа (`Arch.removeNode()`):
+
+```js
+arch.setNode('A', { run: function() { console.log('A') }});
+arch.setNode('B', { run: function() { console.log('B') }}, 'A');
+arch.setNode('C', { run: function() { console.log('C') }}, 'A');
+arch.setNode('D', {
+        run: function(ctx) {
+            ctx.arch.withLock(function() {
+                ctx.arch.removeNode('C');
+            });
+            console.log('D');
+        }
+    }, ['B', 'C']);
+```
+
+Результат выполнения (задача `C` отсутствует):
+
+    D
+    B
+    A
+
+Замещение задачи другой задачей (`Arch.replaceNode()`):
+
+```js
+arch.setNode('A', { run: function() { console.log('A') }});
+arch.setNode('B', { run: function() { console.log('B') }}, 'A');
+arch.setNode('C', {
+        run: function(ctx) {
+            ctx.arch.withLock(function() {
+                ctx.arch.replaceNode('B', {
+                    run: function() { console.log('new B') }
+                });
+            });
+            console.log('C');
+        }
+    }, 'B');
+```
+
+Результат выполнения (функция `run` задачи `B` замещена):
+
+    C
+    new B
+    A
+
 ## API
 
 ### Основные сущности
@@ -224,3 +271,16 @@ arch.setNode('B', {
 
  * `cb` — function, функция, которую следует выполнить в рамках "залоченного" графа.
  * `_this` — this, необязательно; вызывает `cb` с указанным `_this`, см. [MDN/Function/apply](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/apply).
+
+####removeNode(id)
+
+Удаляет задачу из графа.
+
+ * `id` — string, идентификатор удаляемой задачи.
+
+####replaceNode(id, node)
+
+Замещает задачу.
+
+ * `id` — string, идентификатор замещаемой задачи.
+ * `node` — object, новая задача.
