@@ -206,6 +206,28 @@ arch.setNode('C', {
     new B
     A
 
+Проверка наличия задачи в графе (`Arch.hasNode()`):
+
+```js
+arch.setNode('A', { run: function() { console.log('A') }});
+arch.setNode('B', {
+        run: function(ctx) {
+            ctx.arch.lock();
+            if (!ctx.arch.hasNode('C')) {
+                ctx.arch.setNode('C', { run: function() { console.log('C') }}, 'A');
+            }
+            ctx.arch.unlock();
+            console.log('B');
+        }
+    }, 'A');
+```
+
+Результат выполнения:
+
+    B
+    C
+    A
+
 ## API
 
 ### Основные сущности
@@ -220,7 +242,7 @@ arch.setNode('C', {
 
 ```js
 {
-    run: function(ctx) { .. do something .. }
+    run: function(ctx) { /* .. do something .. */ }
 }
 ```
 
@@ -284,3 +306,9 @@ arch.setNode('C', {
 
  * `id` — string, идентификатор замещаемой задачи.
  * `node` — object, новая задача.
+
+####hasNode(id)
+
+Проверяет, есть ли задача в графе.
+
+ * `id` — string, идентификатор проверяемой задачи.
