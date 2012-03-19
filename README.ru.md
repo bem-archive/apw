@@ -227,6 +227,42 @@ arch.setNode('B', {
     C
     A
 
+## Выполнение конфига через API
+
+Если требуется выполнить конфиг через API, а не из командной строки, следует использовать `Runner`. Минимальный пример такого запуска:
+
+```js
+var APW = require('apw'),
+    arch = new APW.Arch();
+
+arch.setNode('A', { run: function() { console.log('A') }});
+
+new APW.Runner(arch).process('A');
+```
+
+Запуск (предположим, `test.js`):
+
+    node test.js
+
+Результат выполнения:
+
+    A
+
+При создании `Runner` можно подмешивать свой контекст:
+
+```js
+var APW = require('apw'),
+    arch = new APW.Arch();
+
+arch.setNode('A', { run: function(ctx) { console.log('A: ' + ctx.my) }});
+
+new APW.Runner(arch, 2, { my: 'ok' }).process('A');
+```
+
+Результат выполнения:
+
+    A: ok
+
 ## API
 
 ### Основные сущности
@@ -255,7 +291,11 @@ arch.setNode('B', {
 
 Задача-ребёнок, блокирует выполнение родителя (`parent`), пока не выполнится сама.
 
-### Arch
+###Arch
+
+####Arch()
+
+Конструктор. Аргументов нет.
 
 ####setNode(id, node, parents, children)
 
@@ -311,3 +351,19 @@ arch.setNode('B', {
 Проверяет, есть ли задача в графе.
 
  * `id` — string, идентификатор проверяемой задачи.
+
+###Runner
+
+####Runner(arch, maxWorkers, ctx)
+
+Конструктор.
+
+ * `arch` — Arch, граф задач, которым должен оперировать данный `Runner`.
+ * `maxWorkers` — positive integer, необязательно; задаёт максимальное количество одновременно выполняемых задач.
+ * `ctx` — object, необязательно; подмешивается в `ctx`, передаваемый в функцию `run()` задачи.
+
+####process(targets)
+
+Запускает выполнение указанных задач.
+
+ * `targets` — string, идентификатор выполняемой задачи, **или** array, список идентификаторов.
