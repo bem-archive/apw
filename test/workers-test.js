@@ -32,22 +32,20 @@ function getSimpleArch(state) {
         }
     }, '3A');
 
+    arch.setNode('4A', { run: function() { state.push('4A') } });
+    arch.setNode('4B', {
+        run: function(ctx) {
+            ctx.plan.subscribeOnAllDone(function(id) {
+                state.push('4B');
+            });
+        }
+    }, '4A');
+
     return arch;
 }
 
-function getRunner(arch, force, method, maxWorkers) {
-    method = method || 'run';
-    maxWorkers = maxWorkers || 2;
-
-    return new CORE.Runner(
-        arch,
-        maxWorkers,
-        {
-            method: method,
-            verbose: true,
-            force: force
-        }
-    );
+function getRunner(arch) {
+    return new CORE.Runner(arch);
 }
 
 suite
@@ -57,7 +55,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleArch(state), true).process('0A'),
+                    getRunner(getSimpleArch(state)).process('0A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -73,7 +71,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleArch(state), true).process('1A'),
+                    getRunner(getSimpleArch(state)).process('1A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -90,7 +88,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleArch(state), true).process('2A'),
+                    getRunner(getSimpleArch(state)).process('2A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -109,7 +107,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleArch(state), true).process('3A'),
+                    getRunner(getSimpleArch(state)).process('3A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -121,6 +119,23 @@ suite
                 if (state[1] === '3C') assert.equal(state[2], '3D');
                 if (state[1] === '3D') assert.equal(state[2], '3C');
                 assert.equal(state[3], '3A');
+            }
+        },
+        'All done subscribers': {
+            topic: function() {
+                var _this = this,
+                    state = [];
+                Q.when(
+                    getRunner(getSimpleArch(state)).process('4A'),
+                    function(value) { _this.callback(null, state) },
+                    function(error) { _this.callback(error, null) }
+                )
+            },
+            'allDone subscribers fired': function(error, state) {
+                assert.isNull(error);
+                assert.lengthOf(state, 2);
+                assert.equal(state[0], '4A');
+                assert.equal(state[1], '4B');
             }
         }
     });
