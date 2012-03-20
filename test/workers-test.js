@@ -25,7 +25,7 @@ function getSimpleArch(state) {
     arch.setNode('3B', {
         run: function(ctx) {
             state.push('3B');
-            ctx.arch.withLock(function() {
+            return ctx.arch.withLock(function() {
                 ctx.arch.setNode('3C', { run: function() { state.push('3C') } }, '3A');
                 ctx.arch.setNode('3D', { run: function() { state.push('3D') } }, '3A');
             });
