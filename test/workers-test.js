@@ -35,7 +35,7 @@ function getSimpleArch(state) {
     arch.setNode('4A', { run: function() { state.push('4A') } });
     arch.setNode('4B', {
         run: function(ctx) {
-            ctx.plan.subscribeOnAllDone(function(id) {
+            ctx.plan.on('allDone', function(id) {
                 state.push('4B');
             });
         }
