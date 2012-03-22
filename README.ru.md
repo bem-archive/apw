@@ -124,10 +124,11 @@ arch.setNode('A', { run: function() { console.log('A') }}, null, ['B', 'C']);
 arch.setNode('A', { run: function() { console.log('A') }});
 arch.setNode('B', {
         run: function(ctx) {
-            ctx.arch.withLock(function() {
+            var lock = ctx.arch.withLock(function() {
                 ctx.arch.setNode('C', { run: function() { console.log('C') }}, 'A');
             });
             console.log('B');
+            return lock;
         }
     }, 'A');
 ```
@@ -168,10 +169,11 @@ arch.setNode('B', { run: function() { console.log('B') }}, 'A');
 arch.setNode('C', { run: function() { console.log('C') }}, 'A');
 arch.setNode('D', {
         run: function(ctx) {
-            ctx.arch.withLock(function() {
+            var lock = ctx.arch.withLock(function() {
                 ctx.arch.removeNode('C');
             });
             console.log('D');
+            return lock;
         }
     }, ['B', 'C']);
 ```
@@ -189,12 +191,13 @@ arch.setNode('A', { run: function() { console.log('A') }});
 arch.setNode('B', { run: function() { console.log('B') }}, 'A');
 arch.setNode('C', {
         run: function(ctx) {
-            ctx.arch.withLock(function() {
+            var lock = ctx.arch.withLock(function() {
                 ctx.arch.replaceNode('B', {
                     run: function() { console.log('new B') }
                 });
             });
             console.log('C');
+            return lock;
         }
     }, 'B');
 ```
@@ -328,10 +331,12 @@ new APW.Runner(arch, 2, { my: 'ok' }).process('A');
 
 Уведомляет `apw` о том, что пользователь завершил менять граф.
 
-####withLock(cb, _this)
+####withLock(cb, context)
+
+Функция `cb` выполняется между вызовами `lock()` и `unlock()`. Возвращает результат вызова `Q.when().fin()`.
 
  * `cb` — function, функция, которую следует выполнить в рамках "залоченного" графа.
- * `_this` — this, необязательно; вызывает `cb` с указанным `_this`, см. [MDN/Function/apply](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/apply).
+ * `context` — `this`, необязательно; вызывает `cb` с указанным `context`, см. [MDN/Function/apply](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/apply).
 
 ####removeNode(id)
 
