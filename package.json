@@ -1,6 +1,6 @@
 {
   "name": "apw",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "homepage": "http://github.com/bem/apw",
   "author": "Sergey Kryzhanovsky <skryzhanovsky@ya.ru> (http://github.com/afelix)",
   "maintainers": [
@@ -19,7 +19,7 @@
   },
   "main": "./lib/core",
   "bin": {
-      "apw": "./bin/apw"
+    "apw": "./bin/apw"
   },
   "engines": {
     "node": "0.6 | 0.7"
