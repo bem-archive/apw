@@ -6,15 +6,15 @@
 
 Памятка по архитектуре:
 
-![Arch](https://github.com/afelix/sandbox2/raw/master/doc/arch.png)
+![Arch](/bem/apw/raw/master/doc/arch.png)
 
-Граф (**Graph**/[graph.js](https://github.com/afelix/sandbox2/blob/master/lib/parts/graph.js "graph.js")) содержит в себе все цели сборки и связи между ними. Цель (parent) не выполнится, пока не отработают успешно её дети (children).
+Архитектура сборки (**Arch**/[arch.js](/bem/apw/blob/master/lib/arch.js "arch.js")) содержит в себе все цели сборки и связи между ними. Цель (parent) не выполнится, пока не отработают успешно её дети (children).
 
-![Graph](https://github.com/afelix/sandbox2/raw/master/doc/graph.png)
+![Arch](/bem/apw/raw/master/doc/graph.png)
 
-Для выполнения цели из графа выделяется план выполнения (**Plan**/[plan.js](https://github.com/afelix/sandbox2/blob/master/lib/parts/plan.js "plan.js")). Он содержит в себе копию подграфа без лишних ссылок. На картинке ниже план выполнения цели 'C'.
+Для выполнения цели из графа выделяется план выполнения (**Plan**/[plan.js](/bem/apw/blob/master/lib/plan.js "plan.js")). Он содержит в себе копию подграфа без лишних ссылок. На картинке ниже план выполнения цели 'C'.
 
-![Plan](https://github.com/afelix/sandbox2/raw/master/doc/plan.png)
+![Plan](/bem/apw/raw/master/doc/plan.png)
 
 Основная задача плана — выдавать в правильном порядке цели для выполнения. В примере выше последовательность приведёт к вот такому исходнику (не именно такой, только иллюстрирует):
 
@@ -24,7 +24,7 @@
     plan.nextJob(); // -> 'F', если успешно выполнился 'G'
     plan.nextJob(); // -> 'C', если успешно выполнились 'D' и 'F'
 
-Выполнением целей заведует сущность **Pool**/[pool.js](https://github.com/afelix/sandbox2/blob/master/lib/parts/pool.js "pool.js"). Предназначенные на выполнение планы передаются в Pool, задачи которого:
+Выполнением целей заведует сущность **Workers**/[workers.js](/bem/apw/blob/master/lib/workers.js "workers.js"). Предназначенные на выполнение планы передаются в Pool, задачи которого:
 
  1. Запрашивать у планов задачи на выполнение.
  2. Не выполнять задачу плана, если она в данный момент выполняется из другого плана. Так повышается вероятность ускорения выполнения пересекающихся по задачам планов.
