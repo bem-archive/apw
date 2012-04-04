@@ -32,14 +32,13 @@ suite
             }, 
             'getNode() A': function(arch) {
                 var node = arch.getNode('A');
-                
-                assert.equal(node.id, 'A');
-                assert.equal(node.node.run, 'testA');
+
+                assert.equal(node.run, 'testA');
             },
             'getNode() default': function(arch) {
                 var node = arch.getNode('XXX');
-                
-                assert.equal(node.id, 'XXX');
+
+                assert.equal(node.getId(), 'XXX');
             },
             'getChildrenIds() A': function(arch) {
                 var children = arch.getChildrenIds('A');
