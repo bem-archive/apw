@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git://github.com/bem/apw.git"
   },
-  "main": "./lib/core",
+  "main": "./lib/apw",
   "bin": {
     "apw": "./bin/apw"
   },

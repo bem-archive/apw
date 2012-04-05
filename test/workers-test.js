@@ -2,10 +2,10 @@ var Q = require('qq'),
     VOWS = require('vows'),
     assert = require('assert'),
     suite = VOWS.describe('Workers'),
-    CORE = require('../lib/core');
+    APW = require('../lib/apw');
 
 function getSimpleArch(state) {
-    var arch = new CORE.Arch();
+    var arch = new APW.Arch();
 
     arch.setNode('0A', { run: function() { state.push('0A') } });
     
@@ -44,8 +44,8 @@ function getSimpleArch(state) {
     return arch;
 }
 
-function getRunner(arch) {
-    return new CORE.Runner(arch);
+function getAPW(arch) {
+    return new APW(arch);
 }
 
 suite
@@ -55,7 +55,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleArch(state)).process('0A'),
+                    getAPW(getSimpleArch(state)).process('0A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -71,7 +71,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleArch(state)).process('1A'),
+                    getAPW(getSimpleArch(state)).process('1A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -88,7 +88,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleArch(state)).process('2A'),
+                    getAPW(getSimpleArch(state)).process('2A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -107,7 +107,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleArch(state)).process('3A'),
+                    getAPW(getSimpleArch(state)).process('3A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -126,7 +126,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getRunner(getSimpleArch(state)).process('4A'),
+                    getAPW(getSimpleArch(state)).process('4A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )

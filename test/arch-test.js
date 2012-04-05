@@ -1,10 +1,10 @@
 var VOWS = require('vows'),
 	assert = require('assert'),
     suite = VOWS.describe('Arch'),
-    CORE = require('../lib/core');
+    APW = require('../lib/apw');
 
 function getEmptyArch() {
-    return new CORE.Arch();
+    return new APW.Arch();
 }
 
 function getSimpleArch() {

@@ -1,10 +1,10 @@
 var VOWS = require('vows'),
     assert = require('assert'),
     suite = VOWS.describe('Plan'),
-    CORE = require('../lib/core');
+    APW = require('../lib/apw');
 
 function getSimpleArch() {
-    var arch = new CORE.Arch();
+    var arch = new APW.Arch();
 
     arch.setNode('A', { run: function() {} });
     arch.setNode('B', { run: function() {} }, 'A');
