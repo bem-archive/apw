@@ -58,29 +58,42 @@ suite
             topic: function() {
                 var arch = getEmptyArch();
                 
-                arch.setNode('A', { run: 'testA' });
-                arch.setNode('B', { run: 'testB' }, 'A');
-                arch.setNode('C', { run: 'testC' }, 'A');
+                arch.setNode('A1', { run: 'testA1' });
+                arch.setNode('A2', { run: 'testA2' });
+                arch.setNode('B', { run: 'testB' }, 'A1');
+                arch.setNode('C', { run: 'testC' }, ['A1', 'A2']);
                 
                 return arch;
             },
-            'hasNode() A': function(arch) {
-                assert.equal(arch.hasNode('A'), true);
+            'hasNode() A1': function(arch) {
+                assert.equal(arch.hasNode('A1'), true);
             },
             'hasNode() absent': function(arch) {
                 assert.equal(arch.hasNode('XXX'), false);
             },
             'hasParents() B': function(arch) {
-                assert.equal(arch.hasParents('B', 'A'), true);
+                assert.equal(arch.hasParents('B', 'A1'), true);
+            },
+            'hasParents() C[A1, A2]': function(arch) {
+                assert.equal(arch.hasParents('C', ['A1', 'A2']), true);
             },
             'hasParents() absent': function(arch) {
                 assert.equal(arch.hasParents('B', 'XXX'), false);
             },
-            'hasChildren() A': function(arch) {
-                assert.equal(arch.hasChildren('A', 'B'), true);
+            'hasParents() C[A1, A2, absent]': function(arch) {
+                assert.equal(arch.hasParents('C', ['A1', 'A2', 'XXX']), false);
+            },
+            'hasChildren() A1': function(arch) {
+                assert.equal(arch.hasChildren('A1', 'B'), true);
+            },
+            'hasChildren() A1[B, C]': function(arch) {
+                assert.equal(arch.hasChildren('A1', ['B', 'C']), true);
+            },
+            'hasChildren() A1[B, C, absent]': function(arch) {
+                assert.equal(arch.hasChildren('A1', ['B', 'C', 'XXX']), false);
             },
             'hasChildren() absent': function(arch) {
-                assert.equal(arch.hasChildren('A', 'XXX'), false);
+                assert.equal(arch.hasChildren('A1', 'XXX'), false);
             }
         },
 
