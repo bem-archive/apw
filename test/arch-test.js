@@ -139,6 +139,7 @@ suite
                 arch.setNode('A', { run: 'testA' });
                 arch.setNode('B', { run: 'testA' });
                 arch.link('B', 'A');
+                arch.link('B', 'A');
                 
                 return arch;
             },
@@ -161,6 +162,7 @@ suite
 
                 arch.setNode('A', { run: 'testA' });
                 arch.setNode('B', { run: 'testB' }, 'A');
+                arch.unlink('B', 'A');
                 arch.unlink('B', 'A');
 
                 return arch;
