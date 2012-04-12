@@ -1,4 +1,4 @@
-APW (Arch-Plans-Workers)
+APW (Arch-Plans-Workers) [![Build Status](https://secure.travis-ci.org/bem/apw.png?branch=master)](http://travis-ci.org/bem/apw)
 ========================
 
 See [russian](/bem/apw/blob/master/README.ru.md) docs for now.
