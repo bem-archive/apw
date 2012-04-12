@@ -156,6 +156,26 @@ suite
                 assert.lengthOf(arch.getChildrenIds('A'), 0);
                 assert.lengthOf(arch.getParentsIds('B'), 0);
             }            
+        },
+
+        'Lock': {
+            topic: function() {
+                var arch = getEmptyArch();
+
+                arch.lock();
+                arch.lock();
+
+                return arch;
+            },
+            'lock() / unlock()': function(arch) {
+                assert.equal(arch.locked, 2);
+                arch.unlock();
+                assert.equal(arch.locked, 1);
+                arch.unlock();
+                assert.equal(arch.locked, 0);
+                arch.unlock();
+                assert.equal(arch.locked, 0);
+            }
         }
 
     });
