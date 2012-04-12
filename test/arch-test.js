@@ -59,6 +59,8 @@ suite
                 var arch = getEmptyArch();
                 
                 arch.setNode('A', { run: 'testA' });
+                arch.setNode('B', { run: 'testB' }, 'A');
+                arch.setNode('C', { run: 'testC' }, 'A');
                 
                 return arch;
             },
@@ -67,6 +69,18 @@ suite
             },
             'hasNode() absent': function(arch) {
                 assert.equal(arch.hasNode('XXX'), false);
+            },
+            'hasParents() B': function(arch) {
+                assert.equal(arch.hasParents('B', 'A'), true);
+            },
+            'hasParents() absent': function(arch) {
+                assert.equal(arch.hasParents('B', 'XXX'), false);
+            },
+            'hasChildren() A': function(arch) {
+                assert.equal(arch.hasChildren('A', 'B'), true);
+            },
+            'hasChildren() absent': function(arch) {
+                assert.equal(arch.hasChildren('A', 'XXX'), false);
             }
         },
 
