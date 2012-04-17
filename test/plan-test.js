@@ -13,11 +13,15 @@ function getSimpleArch() {
     return arch;
 }
 
+function getPlan() {
+    return getSimpleArch().createPlan('A');
+}
+
 suite
     .addBatch({
         'Jobs': {
             topic: function() {
-                return getSimpleArch().createPlan('A').nextJob();
+                return getPlan().nextJob();
             },
             'nextJob()': function(job) {
                 assert.equal(job.id, 'C');
@@ -25,14 +29,34 @@ suite
         },
 
         'Operability': {
-            topic: function() {
-                return getSimpleArch().createPlan('A');
-            },
+            topic: getPlan,
             'isOperable() default': function(plan) {
                 assert.equal(plan.isOperable(), true);
             },
             'allDone() default': function(plan) {
                 assert.equal(plan.allDone(), false);
+            }
+        },
+
+        'Node removal (leaf)': {
+            topic: getPlan,
+            'removeNode() leaf B': function(plan) {
+                assert.equal(plan.hasNode('B'), true);
+
+                plan.removeNode('B');
+
+                assert.equal(plan.hasNode('B'), false);
+            }
+        },
+
+        'Node removal (node)': {
+            topic: getPlan,
+            'removeNode() node A': function(plan) {
+                assert.equal(plan.hasNode('A'), true);
+
+                plan.removeNode('A');
+
+                assert.equal(plan.hasNode('A'), false);
             }
         },
 

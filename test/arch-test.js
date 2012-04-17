@@ -269,6 +269,30 @@ suite
             }
         },
 
+        'Remove tree (simple arch + plan) unforced': {
+            topic: function() {
+                var arch = getEmptyArch();
+
+                arch.setNode('A', { run: 'testA' });
+                arch.setNode('B', { run: 'testB' }, 'A');
+                arch.setNode('C', { run: 'testC' }, 'A');
+                arch.setNode('D', { run: 'testD' }, ['B', 'C']);
+
+                var plan = arch.createPlan('A');
+
+                arch.removeTree('C');
+
+                return plan;
+            },
+            'removeTree() C unforced': function(plan) {
+                assert.equal(plan.hasChildren('A', 'B'), true);
+                assert.equal(plan.hasChildren('A', 'C'), false);
+                assert.equal(plan.hasChildren('B', 'D'), true);
+                assert.equal(plan.hasNode('C'), false);
+            }
+        },
+
+
         'Lock': {
             topic: function() {
                 var arch = getEmptyArch();
