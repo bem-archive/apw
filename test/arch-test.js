@@ -173,6 +173,102 @@ suite
             }            
         },
 
+        'Remove tree (simple arch) unforced': {
+            topic: function() {
+                var arch = getEmptyArch();
+
+                arch.setNode('A', { run: 'testA' });
+                arch.setNode('B', { run: 'testB' }, 'A');
+                arch.setNode('C', { run: 'testC' }, 'A');
+                arch.setNode('D', { run: 'testD' }, ['B', 'C']);
+
+                arch.removeTree('C');
+
+                return arch;
+            },
+            'removeTree() C unforced': function(arch) {
+                assert.equal(arch.hasChildren('A', 'B'), true);
+                assert.equal(arch.hasChildren('A', 'C'), false);
+                assert.equal(arch.hasChildren('B', 'D'), true);
+                assert.equal(arch.hasNode('C'), false);
+            }
+        },
+
+        'Remove tree (simple arch) forced': {
+            topic: function() {
+                var arch = getEmptyArch();
+
+                arch.setNode('A', { run: 'testA' });
+                arch.setNode('B', { run: 'testB' }, 'A');
+                arch.setNode('C', { run: 'testC' }, 'A');
+                arch.setNode('D', { run: 'testD' }, ['B', 'C']);
+
+                arch.removeTree('C', true);
+
+                return arch;
+            },
+            'removeTree() C forced': function(arch) {
+                assert.equal(arch.hasChildren('A', 'B'), true);
+                assert.equal(arch.hasChildren('A', 'C'), false);
+                assert.equal(arch.hasChildren('B', 'D'), false);
+                assert.equal(arch.hasNode('C'), false);
+                assert.equal(arch.hasNode('D'), false);
+            }
+        },
+
+        'Remove tree (not so simple arch) unforced': {
+            topic: function() {
+                var arch = getEmptyArch();
+
+                arch.setNode('A', { run: 'testA' });
+                arch.setNode('B', { run: 'testB' }, 'A');
+                arch.setNode('D', { run: 'testD' }, 'A');
+                arch.setNode('C', { run: 'testC' }, 'B');
+                arch.setNode('E', { run: 'testE' }, 'D');
+                arch.setNode('F', { run: 'testF' }, ['C', 'E']);
+                arch.setNode('G', { run: 'testG' }, 'F');
+
+                arch.removeTree('D');
+
+                return arch;
+            },
+            'removeTree() D unforced': function(arch) {
+                assert.equal(arch.hasChildren('A', 'B'), true);
+                assert.equal(arch.hasChildren('B', 'C'), true);
+                assert.equal(arch.hasChildren('C', 'F'), true);
+                assert.equal(arch.hasChildren('F', 'G'), true);
+                assert.equal(arch.hasNode('D'), false);
+                assert.equal(arch.hasNode('E'), false);
+            }
+        },
+
+        'Remove tree (not so simple arch) forced': {
+            topic: function() {
+                var arch = getEmptyArch();
+
+                arch.setNode('A', { run: 'testA' });
+                arch.setNode('B', { run: 'testB' }, 'A');
+                arch.setNode('D', { run: 'testD' }, 'A');
+                arch.setNode('C', { run: 'testC' }, 'B');
+                arch.setNode('E', { run: 'testE' }, 'D');
+                arch.setNode('F', { run: 'testF' }, ['C', 'E']);
+                arch.setNode('G', { run: 'testG' }, 'F');
+
+                arch.removeTree('D', true);
+
+                return arch;
+            },
+            'removeTree() D forced': function(arch) {
+                assert.equal(arch.hasChildren('A', 'B'), true);
+                assert.equal(arch.hasChildren('B', 'C'), true);
+                assert.equal(arch.hasChildren('C', 'F'), false);
+                assert.equal(arch.hasNode('D'), false);
+                assert.equal(arch.hasNode('E'), false);
+                assert.equal(arch.hasNode('F'), false);
+                assert.equal(arch.hasNode('G'), false);
+            }
+        },
+
         'Lock': {
             topic: function() {
                 var arch = getEmptyArch();
