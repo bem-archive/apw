@@ -3,8 +3,12 @@ var VOWS = require('vows'),
     suite = VOWS.describe('Plan'),
     APW = require('../lib/apw');
 
+function getEmptyArch() {
+    return new APW.Arch();
+}
+
 function getSimpleArch() {
-    var arch = new APW.Arch();
+    var arch = getEmptyArch();
 
     arch.setNode('A', { run: function() {} });
     arch.setNode('B', { run: function() {} }, 'A');
@@ -37,7 +41,7 @@ suite
                 assert.equal(plan.allDone(), false);
             }
         },
-
+                                                                                                                                                                    
         'Node removal (leaf)': {
             topic: getPlan,
             'removeNode() leaf B': function(plan) {
@@ -57,6 +61,53 @@ suite
                 plan.removeNode('A');
 
                 assert.equal(plan.hasNode('A'), false);
+            }
+        },
+
+        'Remove tree (simple plan) unforced': {
+            topic: function() {
+                var arch = getEmptyArch();
+
+                arch.setNode('A', { run: 'testA' });
+                arch.setNode('B', { run: 'testB' }, 'A');
+                arch.setNode('C', { run: 'testC' }, 'A');
+                arch.setNode('D', { run: 'testD' }, ['B', 'C']);
+
+                var plan = arch.createPlan('A');
+
+                arch.removeTree('C');
+
+                return plan;
+            },
+            'removeTree() C unforced': function(plan) {
+                assert.equal(plan.hasChildren('A', 'B'), true);
+                assert.equal(plan.hasChildren('A', 'C'), false);
+                assert.equal(plan.hasChildren('B', 'D'), true);
+                assert.equal(plan.hasNode('C'), false);
+            }
+        },
+
+        'Remove tree (simple plan) forced': {
+            topic: function() {
+                var arch = getEmptyArch();
+
+                arch.setNode('A', { run: 'testA' });
+                arch.setNode('B', { run: 'testB' }, 'A');
+                arch.setNode('C', { run: 'testC' }, 'A');
+                arch.setNode('D', { run: 'testD' }, ['B', 'C']);
+
+                var plan = arch.createPlan('A');
+
+                arch.removeTree('C', true);
+
+                return plan;
+            },
+            'removeTree() C forced': function(plan) {
+                assert.equal(plan.hasChildren('A', 'B'), true);
+                assert.equal(plan.hasChildren('A', 'C'), false);
+                assert.equal(plan.hasChildren('B', 'D'), false);
+                assert.equal(plan.hasNode('C'), false);
+                assert.equal(plan.hasNode('D'), false);
             }
         },
 
