@@ -41,6 +41,21 @@ function getSimpleArch(state) {
         }
     }, '4A');
 
+    arch.setNode('5A', {
+        run: function(ctx) {
+            state.push(ctx.plan);
+        }
+    });
+    arch.setNode('5B', {
+        run: function(ctx) {
+            ctx.plan.lock();
+            ctx.plan.link('5D', '5C');
+            ctx.plan.unlock();
+        }
+    }, '5A');
+    arch.setNode('5C', { run: function() { } }, '5B');
+    arch.setNode('5D', { run: function() { } }, '5C');
+
     return arch;
 }
 
@@ -66,6 +81,7 @@ suite
                 assert.equal(state[0], '0A');
             }            
         },
+
         'Run plan: A -> B': {
             topic: function() {
                 var _this = this,
@@ -83,6 +99,7 @@ suite
                 assert.equal(state[1], '1A');
             }
         },
+
         'Run plan without lock (TODO: should we throw error?): A -> B* -> (A -> C, A -> D)': {
             topic: function() {
                 var _this = this,
@@ -102,6 +119,7 @@ suite
                 assert.equal(state[3], '2A');
             }
         },
+
         'Run plan with lock: A -> B* -> (A -> C, A -> D)': {
             topic: function() {
                 var _this = this,
@@ -121,6 +139,28 @@ suite
                 assert.equal(state[3], '3A');
             }
         },
+
+        'Do not link done node': {
+            topic: function() {
+                var _this = this,
+                    state = [];
+                Q.when(
+                    getAPW(getSimpleArch(state)).process('5A'),
+                    function(value) { _this.callback(null, state) },
+                    function(error) { _this.callback(error, null) }
+                )
+            },
+            'correct plan update on-the-fly': function(error, state) {
+                var plan = state[0];
+                assert.isNull(error);
+                assert.lengthOf(plan.doneJobs, 4);
+                assert.equal(plan.hasNode('5A'), false);
+                assert.equal(plan.hasNode('5B'), false);
+                assert.equal(plan.hasNode('5C'), false);
+                assert.equal(plan.hasNode('5D'), false);
+            }
+        },
+
         'All done subscribers': {
             topic: function() {
                 var _this = this,
