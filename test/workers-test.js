@@ -174,10 +174,10 @@ suite
                 var plan = state[0];
                 assert.isNull(error);
                 assert.lengthOf(plan.doneJobs, 4);
-                assert.equal(plan.hasNode('5A'), false);
-                assert.equal(plan.hasNode('5B'), false);
-                assert.equal(plan.hasNode('5C'), false);
-                assert.equal(plan.hasNode('5D'), false);
+                ['5A', '5B', '5C', 'D']
+                    .forEach(function(id) {
+                        assert.equal(plan.hasNode(id), false, 'has ID: ' + id);
+                    });
             }
         },
 
@@ -195,15 +195,10 @@ suite
                 var plan = state[0];
                 assert.isNull(error);
                 assert.lengthOf(plan.doneJobs, 9);
-                assert.equal(plan.hasNode('6A'), false);
-                assert.equal(plan.hasNode('6B'), false);
-                assert.equal(plan.hasNode('6C'), false);
-                assert.equal(plan.hasNode('6D'), false);
-                assert.equal(plan.hasNode('6E'), false);
-                assert.equal(plan.hasNode('6F'), false);
-                assert.equal(plan.hasNode('6G'), false);
-                assert.equal(plan.hasNode('6H'), false);
-                assert.equal(plan.hasNode('6I'), false);
+                ['6A', '6B', '6C', '6D', '6E', '6F', '6G', '6H', '6I']
+                    .forEach(function(id) {
+                        assert.equal(plan.hasNode(id), false, 'has ID: ' + id);
+                    });
             }
         },
 
