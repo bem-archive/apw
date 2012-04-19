@@ -53,8 +53,28 @@ function getSimpleArch(state) {
             ctx.plan.unlock();
         }
     }, '5A');
-    arch.setNode('5C', { run: function() { } }, '5B');
-    arch.setNode('5D', { run: function() { } }, '5C');
+    arch.setNode('5C', { run: function() {} }, '5B');
+    arch.setNode('5D', { run: function() {} }, '5C');
+
+    arch.setNode('6A', {
+        run: function(ctx) {
+            state.push(ctx.plan);
+        }
+    });
+    arch.setNode('6B', { run: function() {} }, '6A');
+    arch.setNode('6C', { run: function() {} }, '6A');
+    arch.setNode('6D', { run: function() {} }, '6B');
+    arch.setNode('6E', {
+        run: function(ctx) {
+            ctx.plan.lock();
+            ctx.plan.link('6C', '6B');
+            ctx.plan.unlock();
+        }
+    }, ['6B', '6C']);
+    arch.setNode('6F', { run: function() {} }, '6D');
+    arch.setNode('6G', { run: function() {} }, '6D');
+    arch.setNode('6H', { run: function() {} }, '6E');
+    arch.setNode('6I', { run: function() {} }, '6H');
 
     return arch;
 }
@@ -140,7 +160,7 @@ suite
             }
         },
 
-        'Do not link done node': {
+        'Do not link done node (simple plan)': {
             topic: function() {
                 var _this = this,
                     state = [];
@@ -150,7 +170,7 @@ suite
                     function(error) { _this.callback(error, null) }
                 )
             },
-            'correct plan update on-the-fly': function(error, state) {
+            'there are no double done jobs': function(error, state) {
                 var plan = state[0];
                 assert.isNull(error);
                 assert.lengthOf(plan.doneJobs, 4);
@@ -158,6 +178,32 @@ suite
                 assert.equal(plan.hasNode('5B'), false);
                 assert.equal(plan.hasNode('5C'), false);
                 assert.equal(plan.hasNode('5D'), false);
+            }
+        },
+
+        'Do not link done node (partly done subarch)': {
+            topic: function() {
+                var _this = this,
+                    state = [];
+                Q.when(
+                    getAPW(getSimpleArch(state)).process('6A'),
+                    function(value) { _this.callback(null, state) },
+                    function(error) { _this.callback(error, null) }
+                )
+            },
+            'there are no double done jobs': function(error, state) {
+                var plan = state[0];
+                assert.isNull(error);
+                assert.lengthOf(plan.doneJobs, 9);
+                assert.equal(plan.hasNode('6A'), false);
+                assert.equal(plan.hasNode('6B'), false);
+                assert.equal(plan.hasNode('6C'), false);
+                assert.equal(plan.hasNode('6D'), false);
+                assert.equal(plan.hasNode('6E'), false);
+                assert.equal(plan.hasNode('6F'), false);
+                assert.equal(plan.hasNode('6G'), false);
+                assert.equal(plan.hasNode('6H'), false);
+                assert.equal(plan.hasNode('6I'), false);
             }
         },
 
