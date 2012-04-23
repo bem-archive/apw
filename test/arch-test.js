@@ -40,14 +40,14 @@ suite
 
                 assert.equal(node.getId(), 'XXX');
             },
-            'getChildrenIds() A': function(arch) {
-                var children = arch.getChildrenIds('A');
+            'getChildren() A': function(arch) {
+                var children = arch.getChildren('A');
                 
                 assert.lengthOf(children, 1);
                 assert.equal(children[0], 'B');
             },
-            'getParentsIds() B': function(arch) {
-                var parents = arch.getParentsIds('B');
+            'getParents() B': function(arch) {
+                var parents = arch.getParents('B');
                 
                 assert.lengthOf(parents, 1);
                 assert.equal(parents[0], 'A');
@@ -105,7 +105,7 @@ suite
                 arch.removeNode('B');
 
                 assert.equal(arch.hasNode('B'), false);
-                assert.lengthOf(arch.getChildrenIds('A'), 0);
+                assert.lengthOf(arch.getChildren('A'), 0);
             }
         },
 
@@ -113,13 +113,13 @@ suite
             topic: getSimpleArch,
             'removeNode() node A': function(arch) {
                 assert.equal(arch.hasNode('A'), true);
-                assert.lengthOf(arch.getParentsIds('B'), 1);
-                assert.equal(arch.getParentsIds('B')[0], 'A');
+                assert.lengthOf(arch.getParents('B'), 1);
+                assert.equal(arch.getParents('B')[0], 'A');
 
                 arch.removeNode('A');
 
                 assert.equal(arch.hasNode('A'), false);
-                assert.lengthOf(arch.getParentsIds('B'), 0);
+                assert.lengthOf(arch.getParents('B'), 0);
             }
         },
 
@@ -144,12 +144,12 @@ suite
                 return arch;
             },
             'link() B -> A': function(arch) {
-                var children = arch.getChildrenIds('A');
+                var children = arch.getChildren('A');
                 
                 assert.lengthOf(children, 1);
                 assert.equal(children[0], 'B');
 
-                var parents = arch.getParentsIds('B');
+                var parents = arch.getParents('B');
                 
                 assert.lengthOf(parents, 1);
                 assert.equal(parents[0], 'A');
@@ -168,8 +168,8 @@ suite
                 return arch;
             },
             'unlink() B - A': function(arch) {
-                assert.lengthOf(arch.getChildrenIds('A'), 0);
-                assert.lengthOf(arch.getParentsIds('B'), 0);
+                assert.lengthOf(arch.getChildren('A'), 0);
+                assert.lengthOf(arch.getParents('B'), 0);
             }            
         },
 
