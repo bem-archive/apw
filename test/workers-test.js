@@ -4,7 +4,7 @@ var Q = require('qq'),
     suite = VOWS.describe('Workers'),
     APW = require('../lib/apw');
 
-function getSimpleArch(state) {
+function getArch(state) {
     var arch = new APW.Arch();
 
     arch.setNode('0A', { run: function() { state.push('0A') } });
@@ -76,6 +76,10 @@ function getSimpleArch(state) {
     arch.setNode('6H', { run: function() {} }, '6E');
     arch.setNode('6I', { run: function() {} }, '6H');
 
+    arch.setNode('7A', { run: function() { state.push('7A') } });
+    arch.setNode('7B', { run: function() { state.push('7B') } }, '7A');
+    arch.setNode('7C', { run: function() { state.push('7C') } }, '7B');
+
     return arch;
 }
 
@@ -90,7 +94,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getAPW(getSimpleArch(state)).process('0A'),
+                    getAPW(getArch(state)).process('0A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -107,7 +111,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getAPW(getSimpleArch(state)).process('1A'),
+                    getAPW(getArch(state)).process('1A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -125,7 +129,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getAPW(getSimpleArch(state)).process('2A'),
+                    getAPW(getArch(state)).process('2A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -145,7 +149,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getAPW(getSimpleArch(state)).process('3A'),
+                    getAPW(getArch(state)).process('3A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -165,7 +169,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getAPW(getSimpleArch(state)).process('5A'),
+                    getAPW(getArch(state)).process('5A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -181,12 +185,33 @@ suite
             }
         },
 
+        'Run plans on same node': {
+            topic: function() {
+                var _this = this,
+                    state = [],
+                    arch = getArch(state),
+                    apw = getAPW(arch);
+
+                apw.workers.addPlan(arch.createPlan('7A'));
+
+                Q.when(
+                    apw.process('7B'),
+                    function(value) { _this.callback(null, state) },
+                    function(error) { _this.callback(error, null) }
+                )
+            },
+            'test': function(error, state) {
+                assert.isNull(error);
+                console.log(state);
+            }
+        },
+
         'Do not link done node (partly done subarch)': {
             topic: function() {
                 var _this = this,
                     state = [];
                 Q.when(
-                    getAPW(getSimpleArch(state)).process('6A'),
+                    getAPW(getArch(state)).process('6A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
@@ -207,7 +232,7 @@ suite
                 var _this = this,
                     state = [];
                 Q.when(
-                    getAPW(getSimpleArch(state)).process('4A'),
+                    getAPW(getArch(state)).process('4A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
                 )
