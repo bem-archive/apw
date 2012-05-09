@@ -22,12 +22,24 @@ function getEmptyArch() {
 }
 
 function getSimpleArch() {
+    /*
+        A
+        |
+        B
+    */
     return getEmptyArch()
         .addNode(createNode('A'))
         .addNode(createNode('B'), 'A');
 }
 
 function getArch1() {
+    /*
+        A
+       / \
+      B   C
+       \ /
+        D
+    */
     return getEmptyArch()
         .addNode(createNode('A'))
         .addNode(createNode('B'), 'A')
@@ -36,6 +48,17 @@ function getArch1() {
 }
 
 function getArch2() {
+    /*
+        A
+       / \
+      B   D
+      |   |
+      C   E
+       \ /
+        F
+        |
+        G
+     */
     return getEmptyArch()
         .addNode(createNode('A'))
         .addNode(createNode('B'), 'A')
@@ -74,9 +97,11 @@ suite
         'Arch.addNode()': {
             topic: getSimpleArch,
             'new': function(arch) {
-                arch.addNode(createNode('new'));
+                arch.addNode(createNode('new'), 'A', 'B');
 
                 assert.ok(arch.hasNode('new'));
+                assert.equal(arch.getChildren('new'), 'B');
+                assert.equal(arch.getParents('new'), 'A');
             },
             'already existent throws': function(arch) {
                 assert.throws(function() {
@@ -86,46 +111,54 @@ suite
         },
 
         'Arch.setNode()': {
-            topic: getSimpleArch,
+            topic: getArch1,
             'new': function(arch) {
-                arch.setNode(createNode('new'));
+                arch.setNode(createNode('new'), 'A', 'D');
 
                 assert.ok(arch.hasNode('new'));
+                assert.equal(arch.getParents('new'), 'A');
+                assert.equal(arch.getChildren('new'), 'D');
             },
             'already existent': function(arch) {
+                var replaceNode = 'D';
                 arch.setNode({
                     getId: function() {
-                        return 'A';
+                        return replaceNode;
                     },
                     run: function() {
-                        return 'new A';
+                        return 'new ' + replaceNode;
                     }
-                });
+                }, 'A', 'B');
 
-                assert.ok(arch.hasNode('A'));
-                assert.equal(arch.getNode('A').run(), 'new A');
+                assert.ok(arch.hasNode(replaceNode));
+                assert.equal(arch.getNode(replaceNode).run(), 'new ' + replaceNode);
+                assert.equal(arch.getParents(replaceNode), 'A');
+                assert.equal(arch.getChildren(replaceNode), 'B');
             }
         },
 
         'Arch.replaceNode()': {
-            topic: getSimpleArch,
+            topic: getArch1,
             'new throws': function(arch) {
                 assert.throws(function() {
                     arch.replaceNode(createNode('new'));
                 });
             },
             'already existent': function(arch) {
+                var replaceNode = 'D';
                 arch.replaceNode({
                     getId: function() {
-                        return 'A';
+                        return replaceNode;
                     },
                     run: function() {
-                        return 'new A';
+                        return 'new ' + replaceNode;
                     }
-                });
+                }, 'A', 'B');
 
-                assert.ok(arch.hasNode('A'));
-                assert.equal(arch.getNode('A').run(), 'new A');
+                assert.ok(arch.hasNode(replaceNode));
+                assert.equal(arch.getNode(replaceNode).run(), 'new ' + replaceNode);
+                assert.equal(arch.getParents(replaceNode), 'A');
+                assert.equal(arch.getChildren(replaceNode), 'B');
             }
         },
 
