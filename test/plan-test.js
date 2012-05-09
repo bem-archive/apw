@@ -3,18 +3,29 @@ var VOWS = require('vows'),
     suite = VOWS.describe('Plan'),
     APW = require('../lib/apw');
 
+function createNode(id) {
+    return {
+
+        getId: function() {
+            return id;
+        },
+
+        run: function() {
+            return 'test' + id;
+        }
+
+    };
+}
+
 function getEmptyArch() {
     return new APW.Arch();
 }
 
 function getSimpleArch() {
-    var arch = getEmptyArch();
-
-    arch.setNode('A', { run: function() {} });
-    arch.setNode('B', { run: function() {} }, 'A');
-    arch.setNode('C', { run: function() {} }, 'B');
-
-    return arch;
+    return getEmptyArch()
+        .addNode(createNode('A'))
+        .addNode(createNode('B'), 'A')
+        .addNode(createNode('C'), 'B');
 }
 
 function getPlan() {
@@ -66,14 +77,13 @@ suite
 
         'Remove tree (simple plan) unforced': {
             topic: function() {
-                var arch = getEmptyArch();
+                var arch = getEmptyArch()
+                    .addNode(createNode('A'))
+                    .addNode(createNode('B'), 'A')
+                    .addNode(createNode('C'), 'A')
+                    .addNode(createNode('D'), ['B', 'C']),
 
-                arch.setNode('A', { run: 'testA' });
-                arch.setNode('B', { run: 'testB' }, 'A');
-                arch.setNode('C', { run: 'testC' }, 'A');
-                arch.setNode('D', { run: 'testD' }, ['B', 'C']);
-
-                var plan = arch.createPlan('A');
+                    plan = arch.createPlan('A');
 
                 arch.removeTree('C');
 
@@ -89,14 +99,13 @@ suite
 
         'Remove tree (simple plan) forced': {
             topic: function() {
-                var arch = getEmptyArch();
+                var arch = getEmptyArch()
+                    .addNode(createNode('A'))
+                    .addNode(createNode('B'), 'A')
+                    .addNode(createNode('C'), 'A')
+                    .addNode(createNode('D'), ['B', 'C']),
 
-                arch.setNode('A', { run: 'testA' });
-                arch.setNode('B', { run: 'testB' }, 'A');
-                arch.setNode('C', { run: 'testC' }, 'A');
-                arch.setNode('D', { run: 'testD' }, ['B', 'C']);
-
-                var plan = arch.createPlan('A');
+                    plan = arch.createPlan('A');
 
                 arch.removeTree('C', true);
 

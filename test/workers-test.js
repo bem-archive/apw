@@ -5,82 +5,114 @@ var Q = require('qq'),
     APW = require('../lib/apw');
 
 function getArch(state) {
-    var arch = new APW.Arch();
+    var createNode = function(id) {
+            return {
 
-    arch.setNode('0A', { run: function() { state.push('0A') } });
-    
-    arch.setNode('1A', { run: function() { state.push('1A') } });
-    arch.setNode('1B', { run: function() { state.push('1B') } }, '1A');
-    
-    arch.setNode('2A', { run: function() { state.push('2A') } });
-    arch.setNode('2B', {
-        run: function(ctx) {
-            state.push('2B');
-            ctx.arch.setNode('2C', { run: function() { state.push('2C') } }, '2A');
-            ctx.arch.setNode('2D', { run: function() { state.push('2D') } }, '2A');
-        }
-    }, '2A');
+                getId: function() {
+                    return id;
+                },
 
-    arch.setNode('3A', { run: function() { state.push('3A') } });
-    arch.setNode('3B', {
-        run: function(ctx) {
-            state.push('3B');
-            return ctx.arch.withLock(function() {
-                ctx.arch.setNode('3C', { run: function() { state.push('3C') } }, '3A');
-                ctx.arch.setNode('3D', { run: function() { state.push('3D') } }, '3A');
-            });
-        }
-    }, '3A');
+                run: function() {
+                    state.push(id);
+                }
 
-    arch.setNode('4A', { run: function() { state.push('4A') } });
-    arch.setNode('4B', {
-        run: function(ctx) {
-            ctx.plan.on('allDone', function(id) {
-                state.push('4B');
-            });
-        }
-    }, '4A');
+            };
+        };
 
-    arch.setNode('5A', {
-        run: function(ctx) {
-            state.push(ctx.plan);
-        }
-    });
-    arch.setNode('5B', {
-        run: function(ctx) {
-            ctx.plan.lock();
-            ctx.plan.link('5D', '5C');
-            ctx.plan.unlock();
-        }
-    }, '5A');
-    arch.setNode('5C', { run: function() {} }, '5B');
-    arch.setNode('5D', { run: function() {} }, '5C');
+    return new APW.Arch()
+        .addNode(createNode('0A'))
 
-    arch.setNode('6A', {
-        run: function(ctx) {
-            state.push(ctx.plan);
-        }
-    });
-    arch.setNode('6B', { run: function() {} }, '6A');
-    arch.setNode('6C', { run: function() {} }, '6A');
-    arch.setNode('6D', { run: function() {} }, '6B');
-    arch.setNode('6E', {
-        run: function(ctx) {
-            ctx.plan.lock();
-            ctx.plan.link('6C', '6B');
-            ctx.plan.unlock();
-        }
-    }, ['6B', '6C']);
-    arch.setNode('6F', { run: function() {} }, '6D');
-    arch.setNode('6G', { run: function() {} }, '6D');
-    arch.setNode('6H', { run: function() {} }, '6E');
-    arch.setNode('6I', { run: function() {} }, '6H');
+        .addNode(createNode('1A'))
+        .addNode(createNode('1B'), '1A')
 
-    arch.setNode('7A', { run: function() { state.push('7A') } });
-    arch.setNode('7B', { run: function() { state.push('7B') } }, '7A');
-    arch.setNode('7C', { run: function() { state.push('7C') } }, '7B');
+        .addNode(createNode('2A'))
+        .addNode({
+            getId: function() {
+                return '2B';
+            },
+            run: function(ctx) {
+                state.push('2B');
+                ctx.arch.addNode(createNode('2C'), '2A');
+                ctx.arch.addNode(createNode('2D'), '2A');
+            }
+        }, '2A')
 
-    return arch;
+        .addNode(createNode('3A'))
+        .addNode({
+            getId: function() {
+                return '3B';
+            },
+            run: function(ctx) {
+                state.push('3B');
+                return ctx.arch.withLock(function() {
+                    ctx.arch.addNode(createNode('3C'), '3A');
+                    ctx.arch.addNode(createNode('3D'), '3A');
+                });
+            }
+        }, '3A')
+
+        .addNode(createNode('4A'))
+        .addNode({
+            getId: function() {
+                return '4B';
+            },
+            run: function(ctx) {
+                ctx.plan.on('allDone', function(id) {
+                    state.push('4B');
+                });
+            }
+        }, '4A')
+
+        .addNode({
+            getId: function() {
+                return '5A';
+            },
+            run: function(ctx) {
+                state.push(ctx.plan);
+            }
+        })
+        .addNode({
+            getId: function() {
+                return '5B';
+            },
+            run: function(ctx) {
+                ctx.plan.lock();
+                ctx.plan.link('5D', '5C');
+                ctx.plan.unlock();
+            }
+        }, '5A')
+        .addNode(createNode('5C'), '5B')
+        .addNode(createNode('5D'), '5C')
+
+        .addNode({
+            getId: function() {
+                return '6A';
+            },
+            run: function(ctx) {
+                state.push(ctx.plan);
+            }
+        })
+        .addNode(createNode('6B'), '6A')
+        .addNode(createNode('6C'), '6A')
+        .addNode(createNode('6D'), '6B')
+        .addNode({
+            getId: function() {
+                return '6E';
+            },
+            run: function(ctx) {
+                ctx.plan.lock();
+                ctx.plan.link('6C', '6B');
+                ctx.plan.unlock();
+            }
+        }, ['6B', '6C'])
+        .addNode(createNode('6F'), '6D')
+        .addNode(createNode('6G'), '6D')
+        .addNode(createNode('6H'), '6E')
+        .addNode(createNode('6I'), '6H')
+
+        .addNode(createNode('7A'))
+        .addNode(createNode('7B'), '7A')
+        .addNode(createNode('7C'), '7B');
 }
 
 function getAPW(arch) {
@@ -97,7 +129,7 @@ suite
                     getAPW(getArch(state)).process('0A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
-                )
+                ).end();
             },
             'correct run': function(error, state) {
                 assert.isNull(error);
@@ -114,7 +146,7 @@ suite
                     getAPW(getArch(state)).process('1A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
-                )
+                ).end();
             },
             'correct run order': function(error, state) {
                 assert.isNull(error);
@@ -132,7 +164,7 @@ suite
                     getAPW(getArch(state)).process('2A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
-                )
+                ).end();
             },
             'correct plan update on-the-fly': function(error, state) {
                 assert.isNull(error);
@@ -152,7 +184,7 @@ suite
                     getAPW(getArch(state)).process('3A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
-                )
+                ).end();
             },
             'correct plan update on-the-fly': function(error, state) {
                 assert.isNull(error);
@@ -172,10 +204,10 @@ suite
                     getAPW(getArch(state)).process('5A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
-                )
+                ).end();
             },
             'there are no double done jobs': function(error, state) {
-                var plan = state[0];
+                var plan = state.pop();
                 assert.isNull(error);
                 assert.lengthOf(plan.doneJobs, 4);
                 ['5A', '5B', '5C', 'D']
@@ -198,11 +230,10 @@ suite
                     apw.process('7B'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
-                )
+                ).end();
             },
             'test': function(error, state) {
                 assert.isNull(error);
-                console.log(state);
             }
         },
 
@@ -214,10 +245,10 @@ suite
                     getAPW(getArch(state)).process('6A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
-                )
+                ).end();
             },
             'there are no double done jobs': function(error, state) {
-                var plan = state[0];
+                var plan = state.pop();
                 assert.isNull(error);
                 assert.lengthOf(plan.doneJobs, 9);
                 ['6A', '6B', '6C', '6D', '6E', '6F', '6G', '6H', '6I']
@@ -235,7 +266,7 @@ suite
                     getAPW(getArch(state)).process('4A'),
                     function(value) { _this.callback(null, state) },
                     function(error) { _this.callback(error, null) }
-                )
+                ).end();
             },
             'allDone subscribers fired': function(error, state) {
                 assert.isNull(error);
