@@ -228,15 +228,6 @@ suite
             }
         },
 
-        'Node removal (absent)': {
-            topic: getSimpleArch,
-            'removeNode() absent': function(arch) {
-                assert.equal(arch.hasNode('XXX'), false);
-
-                arch.removeNode('XXX');
-            }
-        },
-
         'Node link': {
             topic: function() {
                 return getEmptyArch()

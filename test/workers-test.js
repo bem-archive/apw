@@ -63,53 +63,6 @@ function getArch(state) {
             }
         }, '4A')
 
-        .addNode({
-            getId: function() {
-                return '5A';
-            },
-            run: function(ctx) {
-                state.push(ctx.plan);
-            }
-        })
-        .addNode({
-            getId: function() {
-                return '5B';
-            },
-            run: function(ctx) {
-                ctx.plan.lock();
-                ctx.plan.link('5D', '5C');
-                ctx.plan.unlock();
-            }
-        }, '5A')
-        .addNode(createNode('5C'), '5B')
-        .addNode(createNode('5D'), '5C')
-
-        .addNode({
-            getId: function() {
-                return '6A';
-            },
-            run: function(ctx) {
-                state.push(ctx.plan);
-            }
-        })
-        .addNode(createNode('6B'), '6A')
-        .addNode(createNode('6C'), '6A')
-        .addNode(createNode('6D'), '6B')
-        .addNode({
-            getId: function() {
-                return '6E';
-            },
-            run: function(ctx) {
-                ctx.plan.lock();
-                ctx.plan.link('6C', '6B');
-                ctx.plan.unlock();
-            }
-        }, ['6B', '6C'])
-        .addNode(createNode('6F'), '6D')
-        .addNode(createNode('6G'), '6D')
-        .addNode(createNode('6H'), '6E')
-        .addNode(createNode('6I'), '6H')
-
         .addNode(createNode('7A'))
         .addNode(createNode('7B'), '7A')
         .addNode(createNode('7C'), '7B');
@@ -196,27 +149,6 @@ suite
             }
         },
 
-        'Do not link done node (simple plan)': {
-            topic: function() {
-                var _this = this,
-                    state = [];
-                Q.when(
-                    getAPW(getArch(state)).process('5A'),
-                    function(value) { _this.callback(null, state) },
-                    function(error) { _this.callback(error, null) }
-                ).end();
-            },
-            'there are no double done jobs': function(error, state) {
-                var plan = state.pop();
-                assert.isNull(error);
-                assert.lengthOf(plan.doneJobs, 4);
-                ['5A', '5B', '5C', 'D']
-                    .forEach(function(id) {
-                        assert.equal(plan.hasNode(id), false, 'has ID: ' + id);
-                    });
-            }
-        },
-
         'Run plans on same node': {
             topic: function() {
                 var _this = this,
@@ -234,27 +166,6 @@ suite
             },
             'test': function(error, state) {
                 assert.isNull(error);
-            }
-        },
-
-        'Do not link done node (partly done subarch)': {
-            topic: function() {
-                var _this = this,
-                    state = [];
-                Q.when(
-                    getAPW(getArch(state)).process('6A'),
-                    function(value) { _this.callback(null, state) },
-                    function(error) { _this.callback(error, null) }
-                ).end();
-            },
-            'there are no double done jobs': function(error, state) {
-                var plan = state.pop();
-                assert.isNull(error);
-                assert.lengthOf(plan.doneJobs, 9);
-                ['6A', '6B', '6C', '6D', '6E', '6F', '6G', '6H', '6I']
-                    .forEach(function(id) {
-                        assert.equal(plan.hasNode(id), false, 'has ID: ' + id);
-                    });
             }
         },
 
