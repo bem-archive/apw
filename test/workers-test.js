@@ -82,10 +82,7 @@ describe('Run plan: A', function() {
                 ASSERT.equal(state.length, 1);
                 ASSERT.equal(state[0], '0A');
                 done();
-            },
-            function(error) {
-                throw error;
-            }
+            }, done
         ).end();
     });
 });
@@ -99,10 +96,7 @@ describe('Run plan: A -> B', function() {
                 ASSERT.equal(state[0], '1B');
                 ASSERT.equal(state[1], '1A');
                 done();
-            },
-            function(error) {
-                throw error;
-            }
+            }, done
         ).end();
     });
 });
@@ -118,10 +112,7 @@ describe('Run plan without lock (TODO: should we throw error?): A -> B* -> (A ->
                 if (state[1] === '2D') ASSERT.equal(state[2], '2C');
                 ASSERT.equal(state[3], '2A');
                 done();
-            },
-            function(error) {
-                throw error;
-            }
+            }, done
         ).end();
     });
 });
@@ -137,10 +128,7 @@ describe('Run plan with lock: A -> B* -> (A -> C, A -> D)', function() {
                 if (state[1] === '3D') ASSERT.equal(state[2], '3C');
                 ASSERT.equal(state[3], '3A');
                 done();
-            },
-            function(error) {
-                throw error;
-            }
+            }, done
         ).end();
     });
 });
@@ -156,10 +144,7 @@ describe('Run plans on same node', function() {
         Q.when(apw.process('4B'),
             function() {
                 done();
-            },
-            function(error) {
-                throw error;
-            }
+            }, done
         ).end();
     });
 });
@@ -173,10 +158,7 @@ describe('All done subscribers', function() {
                 ASSERT.equal(state[0], '5A');
                 ASSERT.equal(state[1], '5B');
                 done();
-            },
-            function(error) {
-                throw error;
-            }
+            }, done
         ).end();
     });
 });
