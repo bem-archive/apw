@@ -1,8 +1,10 @@
 var Q = require('qq'),
-    VOWS = require('vows'),
-    assert = require('assert'),
-    suite = VOWS.describe('Workers'),
-    APW = require('../lib/apw');
+    APW = require('../lib/apw'),
+    ASSERT = require('assert'),
+
+    arch,
+    plan,
+    job;
 
 function getArch(state) {
     var createNode = function(id) {
@@ -52,140 +54,111 @@ function getArch(state) {
         }, '3A')
 
         .addNode(createNode('4A'))
+        .addNode(createNode('4B'), '4A')
+        .addNode(createNode('4C'), '4B')
+
+        .addNode(createNode('5A'))
         .addNode({
             getId: function() {
-                return '4B';
+                return '5B';
             },
             run: function(ctx) {
                 ctx.plan.on('allDone', function(id) {
-                    state.push('4B');
+                    state.push('5B');
                 });
             }
-        }, '4A')
-
-        .addNode(createNode('7A'))
-        .addNode(createNode('7B'), '7A')
-        .addNode(createNode('7C'), '7B');
+        }, '5A');
 }
 
 function getAPW(arch) {
     return new APW(arch);
 }
 
-suite
-    .addBatch({
-        'Run plan: A': {
-            topic: function() {
-                var _this = this,
-                    state = [];
-                Q.when(
-                    getAPW(getArch(state)).process('0A'),
-                    function(value) { _this.callback(null, state) },
-                    function(error) { _this.callback(error, null) }
-                ).end();
-            },
-            'correct run': function(error, state) {
-                assert.isNull(error);
-                assert.lengthOf(state, 1);
-                assert.equal(state[0], '0A');
-            }            
-        },
-
-        'Run plan: A -> B': {
-            topic: function() {
-                var _this = this,
-                    state = [];
-                Q.when(
-                    getAPW(getArch(state)).process('1A'),
-                    function(value) { _this.callback(null, state) },
-                    function(error) { _this.callback(error, null) }
-                ).end();
-            },
-            'correct run order': function(error, state) {
-                assert.isNull(error);
-                assert.lengthOf(state, 2);
-                assert.equal(state[0], '1B');
-                assert.equal(state[1], '1A');
-            }
-        },
-
-        'Run plan without lock (TODO: should we throw error?): A -> B* -> (A -> C, A -> D)': {
-            topic: function() {
-                var _this = this,
-                    state = [];
-                Q.when(
-                    getAPW(getArch(state)).process('2A'),
-                    function(value) { _this.callback(null, state) },
-                    function(error) { _this.callback(error, null) }
-                ).end();
-            },
-            'correct plan update on-the-fly': function(error, state) {
-                assert.isNull(error);
-                assert.lengthOf(state, 4);
-                assert.equal(state[0], '2B');
-                if (state[1] === '2C') assert.equal(state[2], '2D');
-                if (state[1] === '2D') assert.equal(state[2], '2C');
-                assert.equal(state[3], '2A');
-            }
-        },
-
-        'Run plan with lock: A -> B* -> (A -> C, A -> D)': {
-            topic: function() {
-                var _this = this,
-                    state = [];
-                Q.when(
-                    getAPW(getArch(state)).process('3A'),
-                    function(value) { _this.callback(null, state) },
-                    function(error) { _this.callback(error, null) }
-                ).end();
-            },
-            'correct plan update on-the-fly': function(error, state) {
-                assert.isNull(error);
-                assert.lengthOf(state, 4);
-                assert.equal(state[0], '3B');
-                if (state[1] === '3C') assert.equal(state[2], '3D');
-                if (state[1] === '3D') assert.equal(state[2], '3C');
-                assert.equal(state[3], '3A');
-            }
-        },
-
-        'Run plans on same node': {
-            topic: function() {
-                var _this = this,
-                    state = [],
-                    arch = getArch(state),
-                    apw = getAPW(arch);
-
-                apw.workers.addPlan(arch.createPlan('7A'));
-
-                Q.when(
-                    apw.process('7B'),
-                    function(value) { _this.callback(null, state) },
-                    function(error) { _this.callback(error, null) }
-                ).end();
-            },
-            'test': function(error, state) {
-                assert.isNull(error);
-            }
-        },
-
-        'All done subscribers': {
-            topic: function() {
-                var _this = this,
-                    state = [];
-                Q.when(
-                    getAPW(getArch(state)).process('4A'),
-                    function(value) { _this.callback(null, state) },
-                    function(error) { _this.callback(error, null) }
-                ).end();
-            },
-            'allDone subscribers fired': function(error, state) {
-                assert.isNull(error);
-                assert.lengthOf(state, 2);
-                assert.equal(state[0], '4A');
-                assert.equal(state[1], '4B');
-            }
-        }
+describe('Run plan: A', function() {
+    it('correct run', function(done) {
+        var state = [];
+        Q.when(getAPW(getArch(state)).process('0A'),
+            function() {
+                ASSERT.equal(state.length, 1);
+                ASSERT.equal(state[0], '0A');
+                done();
+            }, done
+        ).end();
     });
+});
 
-suite.export(module);
+describe('Run plan: A -> B', function() {
+    it('correct run order', function(done) {
+        var state = [];
+        Q.when(getAPW(getArch(state)).process('1A'),
+            function() {
+                ASSERT.equal(state.length, 2);
+                ASSERT.equal(state[0], '1B');
+                ASSERT.equal(state[1], '1A');
+                done();
+            }, done
+        ).end();
+    });
+});
+
+describe('Run plan without lock (TODO: should we throw error?): A -> B* -> (A -> C, A -> D)', function() {
+    it('correct run order', function(done) {
+        var state = [];
+        Q.when(getAPW(getArch(state)).process('2A'),
+            function() {
+                ASSERT.equal(state.length, 4);
+                ASSERT.equal(state[0], '2B');
+                if (state[1] === '2C') ASSERT.equal(state[2], '2D');
+                if (state[1] === '2D') ASSERT.equal(state[2], '2C');
+                ASSERT.equal(state[3], '2A');
+                done();
+            }, done
+        ).end();
+    });
+});
+
+describe('Run plan with lock: A -> B* -> (A -> C, A -> D)', function() {
+    it('correct run order', function(done) {
+        var state = [];
+        Q.when(getAPW(getArch(state)).process('3A'),
+            function() {
+                ASSERT.equal(state.length, 4);
+                ASSERT.equal(state[0], '3B');
+                if (state[1] === '3C') ASSERT.equal(state[2], '3D');
+                if (state[1] === '3D') ASSERT.equal(state[2], '3C');
+                ASSERT.equal(state[3], '3A');
+                done();
+            }, done
+        ).end();
+    });
+});
+
+describe('Run plans on same node', function() {
+    it('test', function(done) {
+        var state = [],
+            arch = getArch(state),
+            apw = getAPW(arch);
+
+        apw.workers.addPlan(arch.createPlan('4A'));
+
+        Q.when(apw.process('4B'),
+            function() {
+                done();
+            }, done
+        ).end();
+    });
+});
+
+describe('All done subscribers', function() {
+    it('allDone subscribers fired', function(done) {
+        var state = [];
+        Q.when(getAPW(getArch(state)).process('5A'),
+            function() {
+                ASSERT.equal(state.length, 2);
+                ASSERT.equal(state[0], '5A');
+                ASSERT.equal(state[1], '5B');
+                done();
+            }, done
+        ).end();
+    });
+});
