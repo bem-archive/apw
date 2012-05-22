@@ -1,34 +1,14 @@
 var APW = require('../lib/apw'),
     ASSERT = require('assert'),
+    COMMON = require('./common'),
+
+    getSimpleArch = COMMON.getSimpleArch,
+    getEmptyArch = COMMON.getEmptyArch,
+    createNode = COMMON.createNode,
 
     arch,
     plan,
     job;
-
-function createNode(id) {
-    return {
-
-        getId: function() {
-            return id;
-        },
-
-        run: function() {
-            return 'test' + id;
-        }
-
-    };
-}
-
-function getEmptyArch() {
-    return new APW.Arch();
-}
-
-function getSimpleArch() {
-    return getEmptyArch()
-        .addNode(createNode('A'))
-        .addNode(createNode('B'), 'A')
-        .addNode(createNode('C'), 'B');
-}
 
 function getPlan() {
     return getSimpleArch().createPlan('A');
