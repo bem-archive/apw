@@ -1,3 +1,0 @@
-Problems:
-- loops in graph
-- possibility to change plan on-the-fly without locking (describe it in manual)
