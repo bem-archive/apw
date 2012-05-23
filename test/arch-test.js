@@ -1,4 +1,4 @@
-var APW = require('../lib/apw'),
+var APW = require(process.env.COVER? '../lib-cov/apw' : '../lib/apw'),
     ASSERT = require('assert'),
     COMMON = require('./common'),
 

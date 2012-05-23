@@ -27,12 +27,15 @@
   "dependencies": {
     "qq": "0.3.x",
     "coa": "0.3.x",
-    "inherit": "1",
-    "mocha": "1.0.x"
+    "inherit": "1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "1.0.x",
+    "visionmedia-jscoverage": "*"
+  },
   "optionalDependencies": {},
   "scripts": {
-    "test": "mocha ./test/*"
+    "test": "make test",
+    "test-cover": "make test-cover"
   }
 }
