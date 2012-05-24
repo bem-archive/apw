@@ -1,4 +1,4 @@
-var APW = require('../lib/apw');
+var APW = require(process.env.COVER? '../lib-cov/apw' : '../lib/apw');
 
 var createNode = exports.createNode = function(id) {
     return {
