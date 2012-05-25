@@ -1,4 +1,4 @@
-var Q = require('qq'),
+var Q = require('q'),
     APW = require(process.env.COVER? '../lib-cov/apw' : '../lib/apw'),
     ASSERT = require('assert'),
 
