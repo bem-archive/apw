@@ -32,10 +32,10 @@ function getArch(state) {
             getId: function() {
                 return '2B';
             },
-            run: function(ctx) {
+            run: function() {
                 state.push('2B');
-                ctx.arch.addNode(createNode('2C'), '2A');
-                ctx.arch.addNode(createNode('2D'), '2A');
+                this.ctx.arch.addNode(createNode('2C'), '2A');
+                this.ctx.arch.addNode(createNode('2D'), '2A');
             }
         }, '2A')
 
@@ -44,12 +44,12 @@ function getArch(state) {
             getId: function() {
                 return '3B';
             },
-            run: function(ctx) {
+            run: function() {
                 state.push('3B');
-                return ctx.arch.withLock(function() {
-                    ctx.arch.addNode(createNode('3C'), '3A');
-                    ctx.arch.addNode(createNode('3D'), '3A');
-                });
+                return this.ctx.arch.withLock(function() {
+                    this.ctx.arch.addNode(createNode('3C'), '3A');
+                    this.ctx.arch.addNode(createNode('3D'), '3A');
+                }, this);
             }
         }, '3A')
 
@@ -62,8 +62,8 @@ function getArch(state) {
             getId: function() {
                 return '5B';
             },
-            run: function(ctx) {
-                ctx.plan.on('allDone', function(id) {
+            run: function() {
+                this.ctx.plan.on('allDone', function(id) {
                     state.push('5B');
                 });
             }
