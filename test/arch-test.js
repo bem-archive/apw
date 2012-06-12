@@ -325,6 +325,25 @@ describe('Remove tree (simple arch + plan) unforced', function() {
     });
 });
 
+describe('Remove tree (rhombus arch)', function() {
+    beforeEach(function() {
+        arch = getEmptyArch()
+            .addNode(createNode('A'))
+            .addNode(createNode('B'), 'A')
+            .addNode(createNode('C'), 'A')
+            .addNode(createNode('D'), ['B', 'C']);
+    });
+
+    it('removeTree() A unforced', function() {
+        arch.removeTree('A');
+
+        ASSERT.equal(arch.hasNode('A'), false);
+        ASSERT.equal(arch.hasNode('B'), false);
+        ASSERT.equal(arch.hasNode('C'), false);
+        ASSERT.equal(arch.hasNode('D'), false);
+    });
+});
+
 describe('Lock', function() {
     beforeEach(function() {
         arch = getEmptyArch();
