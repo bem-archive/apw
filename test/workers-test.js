@@ -73,7 +73,7 @@ function getArch(state) {
 function getAPW(arch) {
     return new APW(arch);
 }
-/*
+
 describe('Run plan: A', function() {
     it('correct run', function(done) {
         var state = [];
@@ -162,4 +162,3 @@ describe('All done subscribers', function() {
         ).end();
     });
 });
-*/

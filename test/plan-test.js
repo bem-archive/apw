@@ -13,7 +13,7 @@ var APW = require(process.env.COVER? '../lib-cov/apw' : '../lib/apw'),
 function getPlan() {
     return getSimpleArch().createPlan('A');
 }
-/*
+
 describe('Jobs', function() {
     beforeEach(function() {
         job = getPlan().nextJob();
@@ -109,4 +109,3 @@ describe('Lock', function() {
         ASSERT.equal(plan.locked, 0);
     });
 });
-*/
