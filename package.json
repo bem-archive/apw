@@ -27,7 +27,8 @@
   "dependencies": {
     "q": "~0.8.8",
     "coa": "0.3.x",
-    "inherit": "1"
+    "inherit": "1",
+    "node.extend": "1"
   },
   "devDependencies": {
     "mocha": "1.0.x",
