@@ -285,12 +285,12 @@ describe('Node lazy links', function() {
         var c = extend({}, arch.children),
             p = extend({}, arch.parents),
             link = {
-                parent: 'X',
-                child: 'E',
+                parent: 'E',
+                child: 'X',
                 ref: 0
             };
 
-        arch.link('E', 'X', true);
+        arch.link('X', 'E', true);
 
         ASSERT.deepEqual(arch.children, c);
         ASSERT.deepEqual(arch.parents, p);
