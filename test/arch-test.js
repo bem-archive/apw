@@ -277,6 +277,9 @@ describe('Node link', function() {
 });
 
 describe('Node lazy links', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getArch2();
     });
@@ -316,6 +319,7 @@ describe('Node lazy links', function() {
 
         ASSERT.deepEqual(arch.lazyLinks, {});
     });
+
 });
 
 describe('Node unlink', function() {
