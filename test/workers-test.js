@@ -1,10 +1,16 @@
 var Q = require('q'),
     APW = require('..'),
-    ASSERT = require('assert'),
+    ASSERT = require('assert');
 
-    arch,
-    plan,
-    job;
+/**
+ * Mocha BDD interface.
+ */
+/** @name describe @function */
+/** @name it @function */
+/** @name before @function */
+/** @name after @function */
+/** @name beforeEach @function */
+/** @name afterEach @function */
 
 function getArch(state) {
     var createNode = function(id) {
