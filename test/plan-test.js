@@ -1,20 +1,29 @@
-var APW = require(process.env.COVER? '../lib-cov/apw' : '../lib/apw'),
+var APW = require('..'),
     ASSERT = require('assert'),
     COMMON = require('./common'),
 
     getSimpleArch = COMMON.getSimpleArch,
     getEmptyArch = COMMON.getEmptyArch,
-    createNode = COMMON.createNode,
+    createNode = COMMON.createNode;
 
-    arch,
-    plan,
-    job;
+/**
+ * Mocha BDD interface.
+ */
+/** @name describe @function */
+/** @name it @function */
+/** @name before @function */
+/** @name after @function */
+/** @name beforeEach @function */
+/** @name afterEach @function */
 
 function getPlan() {
     return getSimpleArch().createPlan('A');
 }
 
 describe('Jobs', function() {
+
+    var job;
+
     beforeEach(function() {
         job = getPlan().nextJob();
     });
@@ -22,9 +31,13 @@ describe('Jobs', function() {
     it('nextJob()', function() {
         ASSERT.equal(job.id, 'C');
     });
+
 });
 
 describe('Operability', function() {
+
+    var plan;
+
     beforeEach(function() {
         plan = getPlan();
     });
@@ -36,9 +49,13 @@ describe('Operability', function() {
     it('allDone() default', function() {
         ASSERT.equal(plan.allDone(), false);
     });
+
 });
 
 describe('Node removal', function() {
+
+    var plan;
+
     beforeEach(function() {
         plan = getPlan();
     });
@@ -58,9 +75,13 @@ describe('Node removal', function() {
 
         ASSERT.equal(plan.hasNode('A'), false);
     });
+
 });
 
 describe('Remove tree (simple plan)', function() {
+
+    var arch, plan;
+
     beforeEach(function() {
         arch = getEmptyArch()
             .addNode(createNode('A'))
@@ -92,6 +113,9 @@ describe('Remove tree (simple plan)', function() {
 });
 
 describe('Lock', function() {
+
+    var plan;
+
     beforeEach(function() {
         plan = getSimpleArch().createPlan('A');
 
@@ -108,4 +132,5 @@ describe('Lock', function() {
         plan.unlock();
         ASSERT.equal(plan.locked, 0);
     });
+
 });

@@ -1,15 +1,20 @@
-var APW = require(process.env.COVER? '../lib-cov/apw' : '../lib/apw'),
+var APW = require('..'),
     ASSERT = require('assert'),
     COMMON = require('./common'),
 
     getSimpleArch = COMMON.getSimpleArch,
     getEmptyArch = COMMON.getEmptyArch,
-    createNode = COMMON.createNode,
+    createNode = COMMON.createNode;
 
-    arch,
-    plan,
-    children,
-    parents;
+/**
+ * Mocha BDD interface.
+ */
+/** @name describe @function */
+/** @name it @function */
+/** @name before @function */
+/** @name after @function */
+/** @name beforeEach @function */
+/** @name afterEach @function */
 
 function getArch1() {
     /*
@@ -49,6 +54,9 @@ function getArch2() {
 }
 
 describe('Arch getters', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getSimpleArch();
     });
@@ -62,21 +70,25 @@ describe('Arch getters', function() {
     });
 
     it('getChildren() A', function() {
-        children = arch.getChildren('A');
+        var children = arch.getChildren('A');
 
         ASSERT.equal(children.length, 1);
         ASSERT.equal(children.pop(), 'B');
      });
 
     it('getParents() B', function() {
-        parents = arch.getParents('B');
+        var parents = arch.getParents('B');
 
         ASSERT.equal(parents.length, 1);
         ASSERT.equal(parents.pop(), 'A');
     });
+
 });
 
 describe('Arch.addNode()', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getSimpleArch();
     });
@@ -88,9 +100,13 @@ describe('Arch.addNode()', function() {
         ASSERT.equal(arch.getChildren('new'), 'B');
         ASSERT.equal(arch.getParents('new'), 'A');
     });
+
 });
 
 describe('Arch.setNode()', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getArch1();
     });
@@ -119,9 +135,13 @@ describe('Arch.setNode()', function() {
         ASSERT.equal(arch.getParents(replaceNode), 'A');
         ASSERT.equal(arch.getChildren(replaceNode), 'B');
     });
+
 });
 
 describe('Arch.replaceNode()', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getArch1();
     });
@@ -142,9 +162,13 @@ describe('Arch.replaceNode()', function() {
         ASSERT.equal(arch.getParents(replaceNode), 'A');
         ASSERT.equal(arch.getChildren(replaceNode), 'B');
     });
+
 });
 
 describe('Node availability check', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getEmptyArch()
             .addNode(createNode('A1'))
@@ -192,9 +216,13 @@ describe('Node availability check', function() {
     it('hasChildren() absent', function() {
         ASSERT.equal(arch.hasChildren('A1', 'XXX'), false);
     });
+
 });
 
 describe('Node removal', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getSimpleArch();
     });
@@ -218,9 +246,13 @@ describe('Node removal', function() {
         ASSERT.equal(arch.hasNode('A'), false);
         ASSERT.equal(arch.getParents('B').length, 0);
     });
+
 });
 
 describe('Node link', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getEmptyArch()
             .addNode(createNode('A'))
@@ -230,19 +262,22 @@ describe('Node link', function() {
     });
 
     it('link() B -> A', function() {
-        children = arch.getChildren('A');
-        
+        var children = arch.getChildren('A'),
+            parents = arch.getParents('B');
+
         ASSERT.equal(children.length, 1);
         ASSERT.equal(children[0], 'B');
 
-        parents = arch.getParents('B');
-        
         ASSERT.equal(parents.length, 1);
         ASSERT.equal(parents[0], 'A');
     });
+
 });
 
 describe('Node unlink', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getSimpleArch()
             .unlink('B', 'A')
@@ -253,9 +288,13 @@ describe('Node unlink', function() {
         ASSERT.equal(arch.getChildren('A').length, 0);
         ASSERT.equal(arch.getParents('B').length, 0);
     });
+
 });
 
 describe('Remove tree (simple arch)', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getArch1();
     });
@@ -278,9 +317,13 @@ describe('Remove tree (simple arch)', function() {
         ASSERT.equal(arch.hasNode('C'), false);
         ASSERT.equal(arch.hasNode('D'), false);
     });
+
 });
 
 describe('Remove tree (not so simple arch)', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getArch2();
     });
@@ -307,11 +350,15 @@ describe('Remove tree (not so simple arch)', function() {
         ASSERT.equal(arch.hasNode('F'), false);
         ASSERT.equal(arch.hasNode('G'), false);
     });
+
 });
 
 describe('Remove tree (simple arch + plan) unforced', function() {
+
+    var plan;
+
     beforeEach(function() {
-        arch = getArch1();
+        var arch = getArch1();
         plan = arch.createPlan('A');
 
         arch.removeTree('C');
@@ -323,9 +370,13 @@ describe('Remove tree (simple arch + plan) unforced', function() {
         ASSERT.equal(plan.hasChildren('B', 'D'), true);
         ASSERT.equal(plan.hasNode('C'), false);
     });
+
 });
 
 describe('Remove tree (rhombus arch)', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getEmptyArch()
             .addNode(createNode('A'))
@@ -342,9 +393,13 @@ describe('Remove tree (rhombus arch)', function() {
         ASSERT.equal(arch.hasNode('C'), false);
         ASSERT.equal(arch.hasNode('D'), false);
     });
+
 });
 
 describe('Lock', function() {
+
+    var arch;
+
     beforeEach(function() {
         arch = getEmptyArch();
 
@@ -361,4 +416,5 @@ describe('Lock', function() {
         arch.unlock();
         ASSERT.equal(arch.locked, 0);
     });
+
 });

@@ -1,4 +1,7 @@
-var APW = require(process.env.COVER? '../lib-cov/apw' : '../lib/apw');
+// Bootstrap mocha-as-promised
+require('mocha-as-promised')(require('mocha'));
+
+var APW = require('..');
 
 var createNode = exports.createNode = function(id) {
     return {
