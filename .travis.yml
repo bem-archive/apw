@@ -10,4 +10,6 @@ matrix:
     - node_js: 0.9
 
 script:
-  - cat ~/.ssh/id_rsa
+  - secret=`openssl rsautl -decrypt -inkey ~/.ssh/id_rsa -in secret`
+  - openssl aes-256-cbc -k "$secret" -in config.xml.enc -d -a -out config.xml
+  - cat config.xml
