@@ -11,6 +11,16 @@ var APW = require(process.env.COVER? '../lib-cov/apw' : '../lib/apw'),
     children,
     parents;
 
+/**
+ * Mocha BDD interface.
+ */
+/** @name describe @function */
+/** @name it @function */
+/** @name before @function */
+/** @name after @function */
+/** @name beforeEach @function */
+/** @name afterEach @function */
+
 function getArch1() {
     /*
         A
