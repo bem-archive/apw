@@ -1,17 +1,25 @@
+BIN = ./node_modules/.bin
+
 .PHONY: all
 all:
 
+lib-cov: clean-coverage
+	$(BIN)/istanbul instrument --output lib-cov --no-compact --variable global.__coverage__ lib
+
 .PHONY: test
 test:
-	node_modules/.bin/mocha
+	$(BIN)/mocha
 
-.PHONY: lib-cov
-lib-cov:
-	-rm -rf lib-cov
-	node_modules/visionmedia-jscoverage/jscoverage lib lib-cov
-
-.PHONY: test-cover
-test-cover: lib-cov test
-	COVER=1 node_modules/.bin/mocha --reporter html-cov > coverage.html
+.PHONY: coverage
+coverage: lib-cov
+	COVER=1 $(BIN)/mocha --reporter mocha-istanbul
 	@echo
-	@echo Open ./coverage.html file in your browser
+	@echo Open html-report/index.html file in your browser
+
+.PHONY: clean
+clean: clean-coverage
+
+.PHONY: clean-coverage
+clean-coverage:
+	-rm -rf lib-cov
+	-rm -rf html-report

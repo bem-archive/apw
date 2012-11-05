@@ -17,7 +17,6 @@
     "type": "git",
     "url": "git://github.com/bem/apw.git"
   },
-  "main": "./lib/apw",
   "bin": {
     "apw": "./bin/apw"
   },
@@ -31,12 +30,19 @@
     "node.extend": "1"
   },
   "devDependencies": {
-    "mocha": "1.0.x",
-    "visionmedia-jscoverage": "*"
+      "istanbul": "~0.1.11",
+      "mocha-as-promised": "*",
+      "mocha-istanbul": "*",
+      "mocha": "~1.6.0"
   },
   "optionalDependencies": {},
   "scripts": {
     "test": "make test",
-    "test-cover": "make test-cover"
-  }
+    "coverage": "make coverage"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
 }

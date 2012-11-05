@@ -1,5 +1,5 @@
 var Q = require('q'),
-    APW = require(process.env.COVER? '../lib-cov/apw' : '../lib/apw'),
+    APW = require('..'),
     ASSERT = require('assert'),
 
     arch,
