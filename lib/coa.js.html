@@ -1,9 +1,11 @@
 <!doctype html>
 <html>
 <head>
-    <title>Code coverage report for All files</title>
+    <title>Code coverage report for lib/coa.js</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta http-equiv="content-language" content="en-gb">
+    
+        <link rel='stylesheet' href='../prettify.css'>
     
     <style type='text/css'>
         body, html {
@@ -175,62 +177,282 @@
     </style>
 </head>
 <body>
-<div class='header medium'>
-    <h1>Code coverage report for <span class='entity'>All files</span></h1>
+<div class='header low'>
+    <h1>Code coverage report for <span class='entity'>lib/coa.js</span></h1>
     <h2>
         
-        Statements: <span class='metric'>72.66% <small>(465 / 640)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class='metric'>17.65% <small>(3 / 17)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Branches: <span class='metric'>52.46% <small>(192 / 366)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class='metric'>0% <small>(0 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class='metric'>65.27% <small>(109 / 167)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class='metric'>0% <small>(0 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class='metric'>75.56% <small>(436 / 577)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class='metric'>18.75% <small>(3 / 16)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
     </h2>
-    <div class="path"></div>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">lib/</a> &#187; coa.js</div>
 </div>
 <div class='body'>
-<div class="coverage-summary">
-<table>
-<thead>
-<tr>
-   <th data-col="file" data-fmt="html" data-html="true" class="file">File</th>
-   <th data-col="pic" data-type="number" data-fmt="html" data-html="true" class="pic"></th>
-   <th data-col="statements" data-type="number" data-fmt="pct" class="pct">Statements</th>
-   <th data-col="statements_raw" data-type="number" data-fmt="html" class="abs"></th>
-   <th data-col="branches" data-type="number" data-fmt="pct" class="pct">Branches</th>
-   <th data-col="branches_raw" data-type="number" data-fmt="html" class="abs"></th>
-   <th data-col="functions" data-type="number" data-fmt="pct" class="pct">Functions</th>
-   <th data-col="functions_raw" data-type="number" data-fmt="html" class="abs"></th>
-   <th data-col="lines" data-type="number" data-fmt="pct" class="pct">Lines</th>
-   <th data-col="lines_raw" data-type="number" data-fmt="html" class="abs"></th>
-</tr>
-</thead>
-<tbody><tr>
-	<td class="file medium" data-value="lib/"><a href="lib/index.html">lib/</a></td>
-	<td data-value="72.66" class="pic medium"><span class="cover-fill" style="width: 72px;"></span><span class="cover-empty" style="width:28px;"></span></td>
-	<td data-value="72.66" class="pct medium">72.66%</td>
-	<td data-value="640" class="abs medium">(465&nbsp;/&nbsp;640)</td>
-	<td data-value="52.46" class="pct medium">52.46%</td>
-	<td data-value="366" class="abs medium">(192&nbsp;/&nbsp;366)</td>
-	<td data-value="65.27" class="pct medium">65.27%</td>
-	<td data-value="167" class="abs medium">(109&nbsp;/&nbsp;167)</td>
-	<td data-value="75.56" class="pct medium">75.56%</td>
-	<td data-value="577" class="abs medium">(436&nbsp;/&nbsp;577)</td>
-	</tr>
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var Q = require('q'),
+    PATH = require('path'),
+    APW = require('./apw'),
+&nbsp;
+    DEFAULT_JOBS = 4;
+&nbsp;
+module.exports = require('coa').Cmd()
+    .name(PATH.basename(process.argv[1]))
+    .title('Build core prototype')
+    .helpful()
+    .opt()
+        .name('version').title('Show version')
+        .short('v').long('version')
+        .flag()
+        .only()
+        .act(<span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            return JSON.parse(require('fs').readFileSync(</span>
+                PATH.join(__dirname, '..', 'package.json')))
+                    .version;
+        })
+        .end()
+    .opt()
+        .name('file').title('Build file')
+        .short('f').long('file')
+        .def('.apw.js')
+        .val(<span class="fstat-no" title="function not covered" >function(file) {</span>
+<span class="cstat-no" title="statement not covered" >            try {</span>
+<span class="cstat-no" title="statement not covered" >                var p = require.resolve(PATH.resolve(file));</span>
+            } catch (ignore) {}
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if (p) <span class="cstat-no" title="statement not covered" >return require(p);</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return {};</span>
+        })
+        .end()
+    .opt()
+        .name('workers').title('Run number of workers')
+        .short('w').long('workers')
+        .def(DEFAULT_JOBS)
+        .val(<span class="fstat-no" title="function not covered" >function(val) {</span>
+<span class="cstat-no" title="statement not covered" >            return val &gt; 0? val : DEFAULT_JOBS;</span>
+        })
+        .end()
+    .opt()
+        .name('force').title('Force rebuild of all nodes')
+        .long('force')
+        .flag()
+        .end()
+    .opt()
+        .name('verbose').title('Verbose mode')
+        .long('verbose')
+        .flag()
+        .end()
+    .arg()
+        .name('targets').title('Build targets')
+        .def('all')
+        .arr()
+        .end()
+    .completable()
+    .act(<span class="fstat-no" title="function not covered" >function(opts, args) {</span>
+<span class="cstat-no" title="statement not covered" >        return Q.when(opts.file.getArch? opts.file.getArch() : getEmptyArch(), <span class="fstat-no" title="function not covered" >function(arch) {</span></span>
+<span class="cstat-no" title="statement not covered" >            return new APW(arch, opts.workers, {</span>
+                    method: opts.method,
+                    verbose: opts.verbose,
+                    force: opts.force
+                })
+                .process(args.targets);
+        });
+    });
+&nbsp;
+<span class="fstat-no" title="function not covered" >function getEmptyArch() {</span>
+<span class="cstat-no" title="statement not covered" >    var arch = new APW.Arch();</span>
+<span class="cstat-no" title="statement not covered" >    arch.setNode({</span>
+        getId: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            return 'all';</span>
+        },
+        run: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            console.error("** Nothing to be done for '%s'", this.getId());</span>
+        }
+    });
+<span class="cstat-no" title="statement not covered" >    return arch;</span>
+}
+&nbsp;</pre></td></tr>
+</table></pre>
 
-</tbody>
-</table>
-</div>
 </div>
 <div class='footer'>
     <div class='meta'>Generated by <a href='http://istanbul-js.org' target='_blank'>istanbul</a> at Sat Nov 10 2012 19:11:30 GMT+0200 (EET)</div>
 </div>
 </body>
+
+<script src="../prettify.js"></script>
 
 <script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
 <script>
