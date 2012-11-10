@@ -12,9 +12,13 @@ test:
 
 .PHONY: coverage
 coverage: lib-cov
-	COVER=1 $(BIN)/mocha --reporter mocha-istanbul
+	APW_COVER=1 $(BIN)/mocha --reporter mocha-istanbul
 	@echo
 	@echo Open html-report/index.html file in your browser
+
+.PHONY: publish
+publish: coverage
+	$(BIN)/volo ghdeploy
 
 .PHONY: clean
 clean: clean-coverage

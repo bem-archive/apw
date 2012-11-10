@@ -27,7 +27,9 @@
     "q": "~0.8.10",
     "coa": "~0.3.8",
     "inherit": "1",
-    "node.extend": "1"
+    "node.extend": "1",
+    "volo-ghdeploy": "~0.0.3",
+    "volo": "~0.2.4"
   },
   "devDependencies": {
     "istanbul": "~0.1.11",

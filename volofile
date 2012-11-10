@@ -1,0 +1,3 @@
+module.exports = {
+    ghdeploy: require('volo-ghdeploy')('html-report', 'cache/volo-ghdeploy')
+}

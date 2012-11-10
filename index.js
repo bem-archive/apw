@@ -1,1 +1,1 @@
-module.exports = require(process.env.COVER? './lib-cov/apw' : './lib/apw');
+module.exports = require(process.env.APW_COVER? './lib-cov/apw' : './lib/apw');
