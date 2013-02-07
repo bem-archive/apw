@@ -293,7 +293,7 @@ describe('Node lazy links', function() {
                 ref: 0
             };
 
-        arch.link('X', 'E', true);
+        arch.addParents('X', 'E', true);
 
         ASSERT.deepEqual(arch.children, c);
         ASSERT.deepEqual(arch.parents, p);
@@ -306,16 +306,34 @@ describe('Node lazy links', function() {
     });
 
     it('lazy link becomes real when both linking nodes become available in arch', function() {
-        arch.link('E', 'X', true);
+        arch.addParents('E', 'X', true);
         arch.addNode(createNode('X'));
 
         ASSERT(arch.hasChildren('X', 'E'));
     });
 
     it('unlink() removes lazy link', function() {
-        arch.link('E', 'X', true);
+        arch.addParents('E', 'X', true);
         arch.addNode(createNode('X'));
         arch.unlink('E', 'X');
+
+        ASSERT.deepEqual(arch.lazyLinks, {});
+    });
+
+    it('removeNode() removes lazy link when child is removed', function() {
+        arch.addParents('E', 'X', true);
+        arch.addNode(createNode('X'));
+
+        arch.removeNode('E');
+
+        ASSERT.deepEqual(arch.lazyLinks, {});
+    });
+
+    it('removeNode() removes lazy link when parent is removed', function() {
+        arch.addParents('E', 'X', true);
+        arch.addNode(createNode('X'));
+
+        arch.removeNode('X');
 
         ASSERT.deepEqual(arch.lazyLinks, {});
     });
