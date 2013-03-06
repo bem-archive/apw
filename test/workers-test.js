@@ -1,4 +1,4 @@
-var Q = require('q'),
+var Q = require('vow'),
     APW = require('..'),
     ASSERT = require('assert');
 
@@ -83,34 +83,34 @@ function getAPW(arch) {
 describe('Run plan: A', function() {
     it('correct run', function(done) {
         var state = [];
-        Q.done(getAPW(getArch(state)).process('0A'),
+        Q.when(getAPW(getArch(state)).process('0A'),
             function() {
                 ASSERT.equal(state.length, 1);
                 ASSERT.equal(state[0], '0A');
                 done();
             }, done
-        );
+        ).done();
     });
 });
 
 describe('Run plan: A -> B', function() {
     it('correct run order', function(done) {
         var state = [];
-        Q.done(getAPW(getArch(state)).process('1A'),
+        Q.when(getAPW(getArch(state)).process('1A'),
             function() {
                 ASSERT.equal(state.length, 2);
                 ASSERT.equal(state[0], '1B');
                 ASSERT.equal(state[1], '1A');
                 done();
             }, done
-        );
+        ).done();
     });
 });
 
 describe('Run plan without lock (TODO: should we throw error?): A -> B* -> (A -> C, A -> D)', function() {
     it('correct run order', function(done) {
         var state = [];
-        Q.done(getAPW(getArch(state)).process('2A'),
+        Q.when(getAPW(getArch(state)).process('2A'),
             function() {
                 ASSERT.equal(state.length, 4);
                 ASSERT.equal(state[0], '2B');
@@ -119,14 +119,14 @@ describe('Run plan without lock (TODO: should we throw error?): A -> B* -> (A ->
                 ASSERT.equal(state[3], '2A');
                 done();
             }, done
-        );
+        ).done();
     });
 });
 
 describe('Run plan with lock: A -> B* -> (A -> C, A -> D)', function() {
     it('correct run order', function(done) {
         var state = [];
-        Q.done(getAPW(getArch(state)).process('3A'),
+        Q.when(getAPW(getArch(state)).process('3A'),
             function() {
                 ASSERT.equal(state.length, 4);
                 ASSERT.equal(state[0], '3B');
@@ -135,7 +135,7 @@ describe('Run plan with lock: A -> B* -> (A -> C, A -> D)', function() {
                 ASSERT.equal(state[3], '3A');
                 done();
             }, done
-        );
+        ).done();
     });
 });
 
@@ -147,24 +147,24 @@ describe('Run plans on same node', function() {
 
         apw.workers.addPlan(arch.createPlan('4A'));
 
-        Q.done(apw.process('4B'),
+        Q.when(apw.process('4B'),
             function() {
                 done();
             }, done
-        );
+        ).done();
     });
 });
 
 describe('All done subscribers', function() {
     it('allDone subscribers fired', function(done) {
         var state = [];
-        Q.done(getAPW(getArch(state)).process('5A'),
+        Q.when(getAPW(getArch(state)).process('5A'),
             function() {
                 ASSERT.equal(state.length, 2);
                 ASSERT.equal(state[0], '5A');
                 ASSERT.equal(state[1], '5B');
                 done();
             }, done
-        );
+        ).done();
     });
 });
