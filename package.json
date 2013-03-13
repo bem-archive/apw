@@ -24,7 +24,7 @@
     "node": ">= 0.6.0"
   },
   "dependencies": {
-    "vow": "~0.1.12",
+    "vow": "~0.2.0",
     "coa": "~0.3.8",
     "inherit": "1",
     "node.extend": "1"
