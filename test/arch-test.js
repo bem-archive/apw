@@ -2,6 +2,8 @@ var APW = require('..'),
     ASSERT = require('assert'),
     COMMON = require('./common'),
 
+    extend = require('node.extend'),
+
     getSimpleArch = COMMON.getSimpleArch,
     getEmptyArch = COMMON.getEmptyArch,
     createNode = COMMON.createNode;
@@ -270,6 +272,70 @@ describe('Node link', function() {
 
         ASSERT.equal(parents.length, 1);
         ASSERT.equal(parents[0], 'A');
+    });
+
+});
+
+describe('Node lazy links', function() {
+
+    var arch;
+
+    beforeEach(function() {
+        arch = getArch2();
+    });
+
+    it('link() E -> nonexistent creates lazy link', function() {
+        var c = extend({}, arch.children),
+            p = extend({}, arch.parents),
+            link = {
+                parent: 'E',
+                child: 'X',
+                ref: 0
+            };
+
+        arch.addParents('X', 'E', true);
+
+        ASSERT.deepEqual(arch.children, c);
+        ASSERT.deepEqual(arch.parents, p);
+        ASSERT.deepEqual(arch.lazyLinks,
+            {
+                E: [link],
+                X: [link]
+            }
+        );
+    });
+
+    it('lazy link becomes real when both linking nodes become available in arch', function() {
+        arch.addParents('E', 'X', true);
+        arch.addNode(createNode('X'));
+
+        ASSERT(arch.hasChildren('X', 'E'));
+    });
+
+    it('unlink() removes lazy link', function() {
+        arch.addParents('E', 'X', true);
+        arch.addNode(createNode('X'));
+        arch.unlink('E', 'X');
+
+        ASSERT.deepEqual(arch.lazyLinks, {});
+    });
+
+    it('removeNode() removes lazy link when child is removed', function() {
+        arch.addParents('E', 'X', true);
+        arch.addNode(createNode('X'));
+
+        arch.removeNode('E');
+
+        ASSERT.deepEqual(arch.lazyLinks, {});
+    });
+
+    it('removeNode() removes lazy link when parent is removed', function() {
+        arch.addParents('E', 'X', true);
+        arch.addNode(createNode('X'));
+
+        arch.removeNode('X');
+
+        ASSERT.deepEqual(arch.lazyLinks, {});
     });
 
 });
