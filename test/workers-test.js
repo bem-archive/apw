@@ -168,3 +168,37 @@ describe('All done subscribers', function() {
         );
     });
 });
+
+describe('Plan with unestablished lazy links', function(done) {
+    it('fails if stuck', function(done) {
+        var createNode = function(id) {
+                return {
+
+                    getId: function() {
+                        return id;
+                    },
+
+                    run: function() {
+                    }
+
+                };
+            },
+
+            arch = new APW.Arch()
+                .addNode(createNode('0A'))
+                .addNode(createNode('1A'), '0A')
+                .addNode(createNode('2A'), '1A')
+                .addNode(createNode('1B'), '1A');
+
+        arch.addChildren('1B', 'X', true);
+
+        Q.done(getAPW(arch).process('0A'),
+            function() {
+                done(new Error('plan finished as resolved'))
+            },
+            function() {
+                done()
+            }
+        );
+    });
+});
