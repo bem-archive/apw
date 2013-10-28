@@ -4,5 +4,5 @@ APW (Arch-Plans-Workers) [![Build Status](https://secure.travis-ci.org/bem/apw.p
 See [russian](README.ru.md) docs for now.
 
 <!-- Yandex.Metrika counter -->
-<img src="//mc.yandex.ru/watch/12831025" style="position:absolute; left:-9999px;" alt="" />
+<img src="https://mc.yandex.ru/watch/12831025" style="position:absolute; left:-9999px;" alt="" />
 <!-- /Yandex.Metrika counter -->
